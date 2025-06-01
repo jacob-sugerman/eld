@@ -1,0 +1,86 @@
+
+
+#app {
+  font-family: Arial, Helvetica, sans-serif;
+  background-image: url("https://cdn.glitch.global/4a51538b-eaf9-42d5-b6c4-48c131d7552b/rock_stones_0169_01_s.jpg?v=1718242537112");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+}
+
+   a:link {
+        color: white;
+        background-color: transparent;
+        text-decoration: none;
+      }
+      a:visited {
+        color: white;
+        background-color: transparent;
+        text-decoration: none;
+      }
+      a:hover {
+        color: orange;
+        background-color: transparent;
+        text-decoration: underline;
+      }
+      a:active {
+        color: green;
+        background-color: transparent;
+        text-decoration: underline;
+      }
+
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+        > .container {
+        position: absolute;
+        text-align: center;
+          
+      }
+
+      .bottom-left {
+        color: white;
+        position: absolute;
+        bottom: 15px;
+        left: 19px;
+      }
+
+      .top-left {
+        color: white;
+        position: absolute;
+        top: 15px;
+        left: 19px;
+      }
+
+      .top-right {
+        color: white;
+        position: absolute;
+        top: 15px;
+        right: 19px;
+      }
+
+      .bottom-right {
+        color: white;
+        position: absolute;
+        bottom: 15px;
+        right: 19px;
+      }
+
+      .centered {
+        color: white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      body {
+        margin: 0;
+        text-shadow: 3px 5px 9px black;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+
+
+/*# sourceMappingURL=/styles.8986bff4.css.map */
