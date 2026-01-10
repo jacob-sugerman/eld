@@ -5,58 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-  <script>
-(function () {
-  const box = document.querySelector('.sticky-box');
-  if (!box) return;
-
-  let isDragging = false;
-  let startX, startY, startLeft, startTop;
-
-  const getPoint = (e) => {
-    if (e.touches) return e.touches[0];
-    return e;
-  };
-
-  const startDrag = (e) => {
-    const p = getPoint(e);
-    isDragging = true;
-
-    box.style.position = 'fixed';
-    box.style.cursor = 'grabbing';
-
-    const rect = box.getBoundingClientRect();
-    startX = p.clientX;
-    startY = p.clientY;
-    startLeft = rect.left;
-    startTop = rect.top;
-
-    e.preventDefault();
-  };
-
-  const drag = (e) => {
-    if (!isDragging) return;
-    const p = getPoint(e);
-
-    box.style.left = startLeft + (p.clientX - startX) + 'px';
-    box.style.top = startTop + (p.clientY - startY) + 'px';
-  };
-
-  const endDrag = () => {
-    isDragging = false;
-    box.style.cursor = 'grab';
-  };
-
-  box.addEventListener('mousedown', startDrag);
-  box.addEventListener('touchstart', startDrag, { passive: false });
-
-  window.addEventListener('mousemove', drag);
-  window.addEventListener('touchmove', drag, { passive: false });
-
-  window.addEventListener('mouseup', endDrag);
-  window.addEventListener('touchend', endDrag);
-})();
-</script>
 
   <style>
     
@@ -159,6 +107,58 @@ img {
 </style>
 
 </head>
+  <script>
+(function () {
+  const box = document.querySelector('.sticky-box');
+  if (!box) return;
+
+  let isDragging = false;
+  let startX, startY, startLeft, startTop;
+
+  const getPoint = (e) => {
+    if (e.touches) return e.touches[0];
+    return e;
+  };
+
+  const startDrag = (e) => {
+    const p = getPoint(e);
+    isDragging = true;
+
+    box.style.position = 'fixed';
+    box.style.cursor = 'grabbing';
+
+    const rect = box.getBoundingClientRect();
+    startX = p.clientX;
+    startY = p.clientY;
+    startLeft = rect.left;
+    startTop = rect.top;
+
+    e.preventDefault();
+  };
+
+  const drag = (e) => {
+    if (!isDragging) return;
+    const p = getPoint(e);
+
+    box.style.left = startLeft + (p.clientX - startX) + 'px';
+    box.style.top = startTop + (p.clientY - startY) + 'px';
+  };
+
+  const endDrag = () => {
+    isDragging = false;
+    box.style.cursor = 'grab';
+  };
+
+  box.addEventListener('mousedown', startDrag);
+  box.addEventListener('touchstart', startDrag, { passive: false });
+
+  window.addEventListener('mousemove', drag);
+  window.addEventListener('touchmove', drag, { passive: false });
+
+  window.addEventListener('mouseup', endDrag);
+  window.addEventListener('touchend', endDrag);
+})();
+</script>
 <body class="loading">
 
   <header class="w3-container w3-xxlarge w3-white w3-right-align">
@@ -182,6 +182,8 @@ img {
        -webkit-backdrop-filter: blur(16px) saturate(125%);
        color: #000;
        box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+       text-shadow: 2px 2px 4px white;
+       border: 4px solid white;
        cursor: grab;
      ">
 
