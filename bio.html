@@ -5,7 +5,61 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <script>
+(function () {
+  const box = document.querySelector('.sticky-box');
+  if (!box) return;
+
+  let isDragging = false;
+  let startX, startY, startLeft, startTop;
+
+  const getPoint = (e) => {
+    if (e.touches) return e.touches[0];
+    return e;
+  };
+
+  const startDrag = (e) => {
+    const p = getPoint(e);
+    isDragging = true;
+
+    box.style.position = 'fixed';
+    box.style.cursor = 'grabbing';
+
+    const rect = box.getBoundingClientRect();
+    startX = p.clientX;
+    startY = p.clientY;
+    startLeft = rect.left;
+    startTop = rect.top;
+
+    e.preventDefault();
+  };
+
+  const drag = (e) => {
+    if (!isDragging) return;
+    const p = getPoint(e);
+
+    box.style.left = startLeft + (p.clientX - startX) + 'px';
+    box.style.top = startTop + (p.clientY - startY) + 'px';
+  };
+
+  const endDrag = () => {
+    isDragging = false;
+    box.style.cursor = 'grab';
+  };
+
+  box.addEventListener('mousedown', startDrag);
+  box.addEventListener('touchstart', startDrag, { passive: false });
+
+  window.addEventListener('mousemove', drag);
+  window.addEventListener('touchmove', drag, { passive: false });
+
+  window.addEventListener('mouseup', endDrag);
+  window.addEventListener('touchend', endDrag);
+})();
+</script>
+
   <style>
+    
 body {
   margin: 0;
   padding: 0;
@@ -124,21 +178,13 @@ img {
      data-aos-once="true"
      style="
        background: rgba(255,255,255,0.18);
-       backdrop-filter: blur(18px) saturate(130%);
-       -webkit-backdrop-filter: blur(18px) saturate(130%);
+       backdrop-filter: blur(16px) saturate(125%);
+       -webkit-backdrop-filter: blur(16px) saturate(125%);
        color: #000;
-       box-shadow: 0 12px 40px rgba(0,0,0,0.25);
-
-       -webkit-mask-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 600 420%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath d=%22M40 120 C60 30 180 10 300 40 C420 70 520 30 560 80 C600 130 580 240 520 320 C460 400 340 420 220 400 C120 380 40 340 30 260 C20 200 20 160 40 120 Z%22 fill=%22white%22/%3E%3C/svg%3E');
-       -webkit-mask-repeat: no-repeat;
-       -webkit-mask-size: 100% 100%;
-       -webkit-mask-position: center;
-
-       mask-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 600 420%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath d=%22M40 120 C60 30 180 10 300 40 C420 70 520 30 560 80 C600 130 580 240 520 320 C460 400 340 420 220 400 C120 380 40 340 30 260 C20 200 20 160 40 120 Z%22 fill=%22white%22/%3E%3C/svg%3E');
-       mask-repeat: no-repeat;
-       mask-size: 100% 100%;
-       mask-position: center;
+       box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+       cursor: grab;
      ">
+
 
 
         <h5>
