@@ -312,40 +312,33 @@ img {
     <label style="display: block; margin-bottom: 20px;">
       <strong>How Can We Help?</strong>
       <div style="margin-top: 8px;">
-        <div style="display: flex; align-items: center; margin-bottom: 10px; justify-content: space-between;">
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
           <span style="font-weight: normal;">Ecological design</span>
-          <span class="frog-toggle" data-value="design" style="font-size: 24px; cursor: pointer; opacity: 0.4; transition: opacity 0.2s;">𓆏</span>
-          <input type="hidden" name="services" value="design" class="frog-input" style="display: none;">
+          <input type="checkbox" name="services" value="design" style="margin-left: 8px; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
         </div>
-        <div style="display: flex; align-items: center; margin-bottom: 10px; justify-content: space-between;">
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
           <span style="font-weight: normal;">Native planting installation</span>
-          <span class="frog-toggle" data-value="installation" style="font-size: 24px; cursor: pointer; opacity: 0.4; transition: opacity 0.2s;">𓆏</span>
-          <input type="hidden" name="services" value="installation" class="frog-input" style="display: none;">
+          <input type="checkbox" name="services" value="installation" style="margin-left: 8px; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
         </div>
-        <div style="display: flex; align-items: center; margin-bottom: 10px; justify-content: space-between;">
+          <div style="display: flex; align-items: center; margin-bottom: 10px;">
           <span style="font-weight: normal;">Site assessment and ecological consultation</span>
-          <span class="frog-toggle" data-value="assessment" style="font-size: 24px; cursor: pointer; opacity: 0.4; transition: opacity 0.2s;">𓆏</span>
-          <input type="hidden" name="services" value="assessment" class="frog-input" style="display: none;">
+          <input type="checkbox" name="services" value="assessment" style="margin-left: 8px; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
         </div>
-        <div style="display: flex; align-items: center; margin-bottom: 10px; justify-content: space-between;">
+         <div style="display: flex; align-items: center; margin-bottom: 10px;">
           <span style="font-weight: normal;">Custom stonework or hardscaping</span>
-          <span class="frog-toggle" data-value="stone" style="font-size: 24px; cursor: pointer; opacity: 0.4; transition: opacity 0.2s;">𓆏</span>
-          <input type="hidden" name="services" value="stone" class="frog-input" style="display: none;">
+          <input type="checkbox" name="services" value="stone" style="margin-left: 8px; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
         </div>
-        <div style="display: flex; align-items: center; margin-bottom: 10px; justify-content: space-between;">
+          <div style="display: flex; align-items: center; margin-bottom: 10px;">
           <span style="font-weight: normal;">Landscape restoration or renovation</span>
-          <span class="frog-toggle" data-value="restoration" style="font-size: 24px; cursor: pointer; opacity: 0.4; transition: opacity 0.2s;">𓆏</span>
-          <input type="hidden" name="services" value="restoration" class="frog-input" style="display: none;">
+          <input type="checkbox" name="services" value="restoration" style="margin-left: 8px; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
         </div>
-        <div style="display: flex; align-items: center; margin-bottom: 10px; justify-content: space-between;">
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
           <span style="font-weight: normal;">Stormwater or drainage strategies</span>
-          <span class="frog-toggle" data-value="stormwater" style="font-size: 24px; cursor: pointer; opacity: 0.4; transition: opacity 0.2s;">𓆏</span>
-          <input type="hidden" name="services" value="stormwater" class="frog-input" style="display: none;">
+          <input type="checkbox" name="services" value="stormwater" style="margin-left: 8px; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
         </div>
-        <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center;">
           <span style="font-weight: normal;">Ecological maintenance and landcare</span>
-          <span class="frog-toggle" data-value="maintenance" style="font-size: 24px; cursor: pointer; opacity: 0.4; transition: opacity 0.2s;">𓆏</span>
-          <input type="hidden" name="services" value="maintenance" class="frog-input" style="display: none;">
+          <input type="checkbox" name="services" value="maintenance" style="margin-left: 8px; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
         </div>
       </div>
     </label>
@@ -387,35 +380,6 @@ img {
       document.body.classList.add('loaded');
 
       // Handle form submission with AJAX
-      // Handle frog toggle selection
-      const frogToggles = document.querySelectorAll('.frog-toggle');
-      frogToggles.forEach(frog => {
-        frog.addEventListener('click', function() {
-          const value = this.dataset.value;
-          const input = form.querySelector(`input[value="${value}"][name="services"]`);
-          
-          // Toggle the opacity to show selection
-          if (this.style.opacity === '1') {
-            this.style.opacity = '0.4';
-            // Remove the input if it exists
-            if (input && input.parentNode) {
-              input.parentNode.removeChild(input);
-            }
-          } else {
-            this.style.opacity = '1';
-            // Add the input if it doesn't exist
-            if (!input) {
-              const newInput = document.createElement('input');
-              newInput.type = 'hidden';
-              newInput.name = 'services';
-              newInput.value = value;
-              newInput.className = 'frog-input';
-              form.appendChild(newInput);
-            }
-          }
-        });
-      });
-
       const form = document.getElementById('contactForm');
       const statusDiv = document.getElementById('formStatus');
 
