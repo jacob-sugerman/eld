@@ -49,7 +49,9 @@ img {
   padding: 20px;
   border-radius: 10px;
   color: white; /* Ensure text is visible on a dark background */
-  
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .content-wrapper {
@@ -107,59 +109,6 @@ img {
 </style>
 
 </head>
-  <script>
-(function () {
-  const box = document.querySelector('.sticky-box');
-  if (!box) return;
-
-  let isDragging = false;
-  let startX, startY, startLeft, startTop;
-
-  const getPoint = (e) => {
-    if (e.touches) return e.touches[0];
-    return e;
-  };
-
-  const startDrag = (e) => {
-    const p = getPoint(e);
-    isDragging = true;
-
-    box.style.position = 'fixed';
-    box.style.cursor = 'grabbing';
-
-    const rect = box.getBoundingClientRect();
-    startX = p.clientX;
-    startY = p.clientY;
-    startLeft = rect.left;
-    startTop = rect.top;
-
-    e.preventDefault();
-  };
-
-  const drag = (e) => {
-    if (!isDragging) return;
-    const p = getPoint(e);
-
-    box.style.left = startLeft + (p.clientX - startX) + 'px';
-    box.style.top = startTop + (p.clientY - startY) + 'px';
-  };
-
-  const endDrag = () => {
-    isDragging = false;
-    box.style.cursor = 'grab';
-  };
-
-  box.addEventListener('mousedown', startDrag);
-  box.addEventListener('touchstart', startDrag, { passive: false });
-
-  window.addEventListener('mousemove', drag);
-  window.addEventListener('touchmove', drag, { passive: false });
-
-  window.addEventListener('mouseup', endDrag);
-  window.addEventListener('touchend', endDrag);
-})();
-</script>
-
 <body class="loading">
 
   <header class="w3-container w3-xxlarge w3-white w3-right-align">
@@ -183,8 +132,7 @@ img {
        -webkit-backdrop-filter: blur(16px) saturate(125%);
        color: #000;
        box-shadow: 0 10px 35px rgba(0,0,0,0.25);
-       cursor: grab;
-     ">
+    ">
 
 
 
