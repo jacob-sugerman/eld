@@ -1,74 +1,332 @@
 <!DOCTYPE html>
 <html>
-  <head>
-        <title>Contact</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
-    <link
-      rel="stylesheet"
-      href="https:/fonts.googleapis.com/css?family=Raleway"
-    />
-    <style>
-        
-      body{ 
-      background-image: url("assets/F0050088-E866-4DC3-A8E6-386AA81C00FF_1_105_c.jpeg");
-      background-repeat:no-repeat;
-      background-position: bottom right;
-      background-size: contain;
-      background-attachment: fixed;
-  
-      }
-p {
+<head>
+      <title>About</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+  <style>
     
-  padding:9px;
-  background-color: rgba(255, 255, 255, 0.18);
-  color:black;
-  border-radius: 15px;
-       backdrop-filter: blur(15px);
-       -webkit-backdrop-filter: blur(15px);
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-    </style>
-  </head>
-  
-  <body class="w3-white">
-    <!-- !PAGE CONTENT! -->
-    <div class="w3-content" style="max-width: 1600px; margin-top: 57px">
-      
 
-      <header class="w3-container w3-top w3-xxlarge w3-white w3-right-align">
-        <a
-          href="index.html"
-          style="border: 2px solid white; color: green"
-          class="w3-btn w3-circle w3-border-black w3-hover-border-green w3-hover-text-black w3-xlarge w3-left w3-ripple"
-          onclick="w3_open()"
-          >𓆏</a
-        >
-        <span>contact</span>
-      </header>
-          </div>
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background-color: white;
+  padding: 10px;
+}
 
-<div class="w3-large w3-padding w3-container w3-left">
-  
+.sticky-container {
+  display: flex;
+  position: relative;
+  margin-top: 80px;
+  flex-direction: row-reverse;
+}
+
+img {
+  width: 200vw;
+  height: auto;
+  display: block;
+  max-height: 100%;
+}
+
+.sticky-box {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 200px;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: -200px;
+  z-index: 2;
+  background: #000;
+  padding: 2px 40px;
+  border-radius: 10px;
+  color: white; /* Ensure text is visible on a dark background */
+  height: fit-content;
+}
+
+.content-wrapper {
+  padding-bottom: 200px;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .sticky-container {
+    flex-direction: column;
+    margin-top: 60px;
+    align-items: center; /* Center align items */
+
+  }
+
+  img {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .sticky-box {
+    margin-left: 0;
+    top: 50px; /* Position closer to the top */
+    width: 85%; /* Adjust width on mobile */
+    max-height: none; /* Allow the box to extend if needed */
+    padding: 15px; /* Reduce padding slightly */
+    position: absolute; /* Change to absolute for overlapping effect */
+    z-index: 3; /* Ensure it's above the image */
+
+  }
+
+  header {
+    padding: 8px;
+  }
+}
+    
+    
+    /* Hide content until AOS is ready */
+    body.loading .w3-content {
+      visibility: hidden;
+    }
+
+    body.loaded .w3-content {
+      visibility: visible;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    /* Other styles... */
+
+    .contact-form {
+      max-width: 600px;
+      margin: 60px auto;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-form h2 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      color: #333;
+      font-weight: 600;
+    }
+
+    .contact-form > p {
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      font-size: 15px;
+    }
+
+    .contact-form form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .contact-form label {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+      font-weight: 500;
+      color: #333;
+      font-size: 14px;
+    }
+
+    .contact-form input,
+    .contact-form select,
+    .contact-form textarea {
+      margin-top: 8px;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+
+    .contact-form input:focus,
+    .contact-form select:focus,
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: #333;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .contact-form button {
+      padding: 14px 28px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      margin-top: 10px;
+    }
+
+    .contact-form button:hover {
+      background-color: #555;
+    }
+
+    .contact-form .form-note {
+      text-align: center;
+      color: #999;
+      font-size: 13px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .contact-form {
+        margin: 40px 20px;
+        padding: 25px;
+      }
+
+      .contact-form h2 {
+        font-size: 22px;
+      }
+    }
+
+</style>
+
+</head>
+<body class="loading">
+
+  <header class="w3-container w3-xxlarge w3-white w3-right-align">
+    <a href="index.html"
+       style="border: 2px solid white; color: green"
+       class="w3-btn w3-circle w3-border-black w3-hover-border-green w3-hover-text-black w3-xlarge w3-left w3-ripple"
+       onclick="w3_open()">𓆏</a>
+    <span>about</span>
+  </header>
+
+  <div class="w3-content">
+    <div class="sticky-container">
+      <img data-aos="zoom-in-up" 
+           src="assets/F0050088-E866-4DC3-A8E6-386AA81C00FF_1_105_c.jpeg">
+   <div class="sticky-box w3-card-4 w3-padding"
+     data-aos="zoom-in-down"
+     data-aos-once="true"
+     style="
+       background: rgba(255,255,255,0.18);
+       backdrop-filter: blur(16px) saturate(125%);
+       -webkit-backdrop-filter: blur(16px) saturate(125%);
+       color: #000;
+       box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+    ">
 
 
-<p>
 
- Get in touch today for a free estimate. 
-<br><br>
-  <strong>Phone</strong>: <br>612-702-8542<br><br>
-  <strong>Email</strong>: <br>jacob.t.sugerman@gmail.com
-</p>
+        <h5>
+        We'd love to hear from you. To get in touch, please fill out the form below or reach out directly via phone or email.
+        <br>
+        <br>
+        <strong>Phone:</strong> 
+        <br>
+        612-702-8542
+        <br>
+        <br>
+        <strong>Email:</strong>
+        <br> jacob.t.sugerman@gmail.com
+        <h5>
+      </div>
+    </div>
+<!-- Contact Form Section -->
+<section class="contact-form">
+  <h2>Let’s Talk About Your Landscape</h2>
+
+  <p>
+    Ecology Landscape Design works with homeowners to create landscapes that are
+    functional, resilient, and rooted in local ecology.
+  </p>
+
+  <p>
+    Whether you’re interested in native plantings, habitat-focused design,
+    stormwater solutions, site consultation, or long-term ecological maintenance,
+    this form is a first step in understanding your landscape and your goals.
+  </p>
+
+  <form action="https://formspree.io/f/meeeajar" method="POST">
+    <label>
+      Name
+      <input type="text" name="name" required>
+    </label>
+
+    <label>
+      Email Address
+      <input type="email" name="email" required>
+    </label>
+
+    <label>
+      Property Location (City or Neighborhood)
+      <input type="text" name="location">
+    </label>
+
+    <label>
+      How Can I Help?
+      <select name="services" multiple>
+        <option value="design">Ecological design</option>
+        <option value="installation">New project installation</option>
+        <option value="assessment">Ecological site assessment</option>
+        <option value="stormwater">Stormwater or drainage strategies</option>
+        <option value="maintenance">Ecological maintenance and landcare</option>
+      </select>
+    </label>
+
+    <label>
+      Tell Me About Your Landscape
+      <textarea name="message" rows="6" placeholder="What’s working well, what isn’t, and what you’d like to improve—ecologically or aesthetically."></textarea>
+    </label>
+
+    <label>
+      Project Timeline (Optional)
+      <input type="text" name="timeline" placeholder="Immediate, seasonal, or long-term">
+    </label>
+
+    <label>
+      Maintenance Interest (Optional)
+      <select name="maintenance">
+        <option value="">—</option>
+        <option value="one-time">One-time consultation</option>
+        <option value="seasonal">Seasonal support</option>
+        <option value="long-term">Long-term ecological maintenance</option>
+      </select>
+    </label>
+
+    <button type="submit">Start the Conversation</button>
+  </form>
+
+  <p class="form-note">
+    You’ll receive a thoughtful, personal response—typically within 1–2 business days.
+    All inquiries are kept confidential.
+  </p>
+</section>
+
+   
   </div>
-  
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-    <script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
       AOS.init({
         duration: 1900,
         easing: "ease-in-sine",
       });
-    </script>
+      
+      document.body.classList.remove('loading');
+      document.body.classList.add('loaded');
+    });
+  </script>
+
 </body>
 </html>
