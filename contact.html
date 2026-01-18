@@ -73,13 +73,16 @@ img {
 
   .sticky-box {
     margin-left: 0;
+    margin-right: 0;
     top: 50px; /* Position closer to the top */
-    width: 85%; /* Adjust width on mobile */
-    max-height: none; /* Allow the box to extend if needed */
-    padding: 15px; /* Reduce padding slightly */
+    width: 90%; /* Adjust width on mobile */
+    max-width: calc(100% - 20px);
+    padding: 10px 15px;
     position: absolute; /* Change to absolute for overlapping effect */
     z-index: 3; /* Ensure it's above the image */
-
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   header {
