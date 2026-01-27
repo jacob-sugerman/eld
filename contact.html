@@ -1,32 +1,211 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>𓆏 Contact</title>
+      <title>𓆏 Contact</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
   <style>
-    /* ——— UNCHANGED STYLES ——— */
-    body { margin: 0; padding: 0; box-sizing: border-box; }
-    header { position: fixed; top: 0; left: 0; right: 0; z-index: 10; background-color: white; padding: 10px; }
-    .sticky-container { display: flex; position: relative; margin-top: 80px; flex-direction: row-reverse; }
-    img { width: 200vw; height: auto; display: block; max-height: 100%; }
-    .sticky-box { position: sticky; top: 200px; margin-right: -200px; z-index: 2; background: #000; padding: 2px 40px; border-radius: 10px; height: fit-content; }
-    .contact-form { max-width: 600px; margin: 60px auto; padding: 40px; background: rgba(255,255,255,0.95); border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-    .contact-form label { display: flex; flex-direction: column; margin-bottom: 20px; }
-    .contact-form input, .contact-form textarea { margin-top: 8px; padding: 12px; border: 1px solid #ddd; border-radius: 6px; }
-    .contact-form button { padding: 14px 28px; background: #333; color: white; border: none; border-radius: 6px; cursor: pointer; }
-    .contact-form button:hover { background: green; }
-    .form-status { display: none; padding: 12px; border-radius: 6px; margin-top: 20px; text-align: center; }
-    .form-status.success { display: block; background: #d4edda; color: #155724; }
-    .form-status.error { display: block; background: #f8d7da; color: #721c24; }
-  </style>
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background-color: white;
+  padding: 10px;
+}
+
+.sticky-container {
+  display: flex;
+  position: relative;
+  margin-top: 80px;
+  flex-direction: row-reverse;
+}
+
+img {
+  width: 200vw;
+  height: auto;
+  display: block;
+  max-height: 100%;
+}
+
+.sticky-box {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 200px;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: -200px;
+  z-index: 2;
+  background: #000;
+  padding: 2px 40px;
+  border-radius: 10px;
+  color: white;
+  height: fit-content;
+}
+
+.content-wrapper {
+  padding-bottom: 200px;
+}
+
+@media (max-width: 768px) {
+  .sticky-container {
+    flex-direction: column;
+    margin-top: 60px;
+    align-items: center;
+  }
+
+  img {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .sticky-box {
+    margin-left: 0;
+    margin-right: 0;
+    top: 50px;
+    width: 90%;
+    max-width: calc(100% - 20px);
+    padding: 10px 15px;
+    position: absolute;
+    z-index: 3;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  header {
+    padding: 8px;
+  }
+}
+
+body.loading .w3-content {
+  visibility: hidden;
+}
+
+body.loaded .w3-content {
+  visibility: visible;
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.contact-form {
+  max-width: 600px;
+  margin: 60px auto;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.contact-form h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #333;
+  font-weight: 600;
+}
+
+.contact-form > p {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+.contact-form form {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-form label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+  margin-top: 8px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: #333;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+.contact-form button {
+  padding: 14px 28px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 10px;
+}
+
+.contact-form button:hover {
+  background-color: green;
+}
+
+.contact-form .form-status {
+  display: none;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.contact-form .form-status.success {
+  display: block;
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.contact-form .form-status.error {
+  display: block;
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+</style>
 </head>
 
 <body class="loading">
 
 <header class="w3-container w3-xxlarge w3-white w3-right-align">
-  <a href="index.html" class="w3-btn w3-circle w3-border-black w3-left">𓆏</a>
+  <a href="index.html"
+     style="border: 2px solid white; color: green"
+     class="w3-btn w3-circle w3-border-black w3-hover-border-green w3-hover-text-black w3-xlarge w3-left w3-ripple">𓆏</a>
   <span>contact</span>
 </header>
 
@@ -35,12 +214,21 @@
 <section class="contact-form">
   <h2>Let’s Talk About Your Landscape</h2>
 
+  <p>
+    Ecology Landscape Design works with homeowners to create landscapes that are
+    functional, resilient, and rooted in local ecology.
+  </p>
+
+  <p>
+    Whether you’re interested in native plants, habitat-focused design,
+    ecological consultation, stormwater solutions, or ongoing ecological maintenance,
+    this form is a first step in understanding your landscape and goals.
+  </p>
+
   <form id="contactForm" action="https://api.web3forms.com/submit" method="POST">
 
-    <!-- REQUIRED WEB3FORMS FIELDS -->
+    <!-- Web3Forms requirement -->
     <input type="hidden" name="access_key" value="f6b5be6b-6c40-49d8-9635-3bb86de4d8c5">
-    <input type="hidden" name="subject" value="New Ecology Landscape Design Inquiry">
-    <input type="hidden" name="from_name" value="Ecology Landscape Design Website">
 
     <label>
       <strong>Name</strong>
@@ -57,15 +245,60 @@
       <input type="text" name="location">
     </label>
 
+    <!-- CHECKBOX LIST: UNCHANGED -->
+    <label style="display: block; margin-bottom: 20px;">
+      <strong>How Can We Help?</strong>
+      <div style="margin-top: 8px;">
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+          <span style="font-weight: normal;">Ecological design services</span>
+          <input type="checkbox" name="services" value="design" style="margin-left: 8px; width: 18px; height: 18px;">
+        </div>
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+          <span style="font-weight: normal;">Native planting or raingarden installation</span>
+          <input type="checkbox" name="services" value="installation" style="margin-left: 8px; width: 18px; height: 18px;">
+        </div>
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+          <span style="font-weight: normal;">Custom stonework or hardscaping</span>
+          <input type="checkbox" name="services" value="stone" style="margin-left: 8px; width: 18px; height: 18px;">
+        </div>
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+          <span style="font-weight: normal;">Site assessment and ecological consultation</span>
+          <input type="checkbox" name="services" value="assessment" style="margin-left: 8px; width: 18px; height: 18px;">
+        </div>
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+          <span style="font-weight: normal;">Landscape restoration or renovation</span>
+          <input type="checkbox" name="services" value="restoration" style="margin-left: 8px; width: 18px; height: 18px;">
+        </div>
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+          <span style="font-weight: normal;">Stormwater or drainage strategies</span>
+          <input type="checkbox" name="services" value="stormwater" style="margin-left: 8px; width: 18px; height: 18px;">
+        </div>
+        <div style="display: flex; align-items: center;">
+          <span style="font-weight: normal;">Ecological maintenance and landcare</span>
+          <input type="checkbox" name="services" value="maintenance" style="margin-left: 8px; width: 18px; height: 18px;">
+        </div>
+      </div>
+    </label>
+
     <label>
       <strong>Tell Us About Your Landscape</strong>
-      <textarea name="message" rows="6"></textarea>
+      <textarea name="message" rows="6" placeholder="What’s working well, what isn’t, and what you’d like to improve—ecologically or aesthetically."></textarea>
+    </label>
+
+    <label>
+      <strong>Project Timeline (Optional)</strong>
+      <input type="text" name="timeline" placeholder="Immediate, seasonal, or ongoing">
     </label>
 
     <button type="submit">Start the Conversation</button>
 
     <div class="form-status" id="formStatus"></div>
   </form>
+
+  <p class="form-note">
+    You’ll receive a thoughtful, personal response—typically within 1–2 business days.
+    All inquiries are kept confidential.
+  </p>
 </section>
 
 </div>
@@ -73,39 +306,43 @@
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-  AOS.init();
+  AOS.init({ duration: 1900, easing: "ease-in-sine" });
 
-  const form = document.getElementById("contactForm");
-  const status = document.getElementById("formStatus");
+  document.body.classList.remove('loading');
+  document.body.classList.add('loaded');
 
-  form.addEventListener("submit", async function (e) {
+  const form = document.getElementById('contactForm');
+  const statusDiv = document.getElementById('formStatus');
+
+  form.addEventListener('submit', function (e) {
     e.preventDefault();
 
     const formData = new FormData(form);
 
-    try {
-      const response = await fetch(form.action, {
-        method: "POST",
-        body: formData,
-        headers: { "Accept": "application/json" }
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        status.textContent = "Thank you! Your message has been sent successfully.";
-        status.className = "form-status success";
+    fetch(form.action, {
+      method: 'POST',
+      body: formData,
+      headers: { "Accept": "application/json" }
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        statusDiv.textContent = 'Thank you! Your message has been sent successfully.';
+        statusDiv.classList.remove('error');
+        statusDiv.classList.add('success');
         form.reset();
+        setTimeout(() => statusDiv.classList.remove('success'), 5000);
       } else {
-        throw new Error(result.message);
+        throw new Error();
       }
+    })
+    .catch(() => {
+      statusDiv.textContent = 'Error sending message. Please try again.';
+      statusDiv.classList.remove('success');
+      statusDiv.classList.add('error');
+    });
 
-    } catch (error) {
-      status.textContent = "Error sending message. Please try again.";
-      status.className = "form-status error";
-    }
-
-    status.scrollIntoView({ behavior: "smooth" });
+    statusDiv.scrollIntoView({ behavior: 'smooth' });
   });
 });
 </script>
