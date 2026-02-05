@@ -22,15 +22,28 @@
         margin-bottom: 0px;
         cursor: pointer;
         opacity: 0.8;
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
       }
       .w3-third img:hover {
         opacity: 1;
         transition: 0.3s;
       }
+      .w3-third img[loading] {
+        background: #f0f0f0;
+      }
+      .w3-third img.loaded {
+        animation: none !important;
+        background: none !important;
+      }
       .w3-row-padding img {
         margin-bottom: 0px;
       }
-    
+      @keyframes loading {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
     </style>
   </head>
   <body class="w3-white">
