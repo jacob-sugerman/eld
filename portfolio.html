@@ -4,6 +4,7 @@
     <title>𓆏 Portfolio</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preload" as="image" href="assets/hg8.jpg" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
     <link
       rel="stylesheet"
@@ -56,42 +57,43 @@
     <!-- Photo Grid -->
     <div class="w3-row">
       <div class="w3-third">
-        <img src="assets/hg8.jpg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="high" onclick="onClick(this)" />
-        <img src="assets/IMG_8272.jpg" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
-        <img src="assets/DSC015042.JPG" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
-        <img src="assets/Image2.png" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
-        <img src="assets/289F8A61-CB08-46FD-8AF8-0985A3968BA5_1_105_c.jpeg" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
-        <img src="assets/detention.jpg" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
-        <img src="assets/252DC66B-B0A7-4F21-A4AC-38022EAD7D23_1_105_c.jpeg" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
-        <img src="assets/Asclepias-incarnata-Rose-Milkweed-monarch_2.jpg" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
-        <img src="assets/Eastern_Tiger_Swallowtail_Papilio_glaucus_Wings_2908px.jpg" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
+        <!-- First hero image is eager; all others remain lazy for performance -->
+        <img src="assets/hg8.jpg" style="width: 100%" decoding="async" fetchpriority="high" onclick="onClick(this)" />
+        <img src="assets/IMG_8272.jpg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/DSC015042.JPG" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/Image2.png" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/289F8A61-CB08-46FD-8AF8-0985A3968BA5_1_105_c.jpeg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/detention.jpg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/252DC66B-B0A7-4F21-A4AC-38022EAD7D23_1_105_c.jpeg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/Asclepias-incarnata-Rose-Milkweed-monarch_2.jpg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/Eastern_Tiger_Swallowtail_Papilio_glaucus_Wings_2908px.jpg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
       </div>
 
       <div class="w3-third">
-        <img src="assets/IMG_3402.jpg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="high" onclick="onClick(this)" />
-        <img src="assets/IMG_0632.jpeg" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
-        <img src="assets/IMG_4365.jpg" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
-        <img src="assets/DSC01617.jpeg" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
-        <img src="assets/DSC01622.jpeg" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
-        <img src="assets/MarkTwain2.png" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
-        <img src="assets/Liatris-aspera-rough-blazing-star-black-swallowtail-009.jpg" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
-        <img src="assets/05BFA3C2-965C-460D-8CC4-4319289DCD61_1_105_c.jpeg" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
-        <img src="assets/HarderNew.jpg" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
-        <img src="assets/2186D3E2-2329-4C0B-AA7B-7387FC5E4166_1_201_a.jpeg" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
+        <img src="assets/IMG_3402.jpg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/IMG_0632.jpeg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/IMG_4365.jpg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/DSC01617.jpeg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/DSC01622.jpeg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/MarkTwain2.png" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/Liatris-aspera-rough-blazing-star-black-swallowtail-009.jpg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/05BFA3C2-965C-460D-8CC4-4319289DCD61_1_105_c.jpeg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/HarderNew.jpg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/2186D3E2-2329-4C0B-AA7B-7387FC5E4166_1_201_a.jpeg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
       </div>
 
       <div class="w3-third">
-        <img src="assets/E-wing5.2~.jpg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="high" onclick="onClick(this)" />
-        <img src="assets/IMG_1145.jpg" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
-        <img src="assets/DSC01569.jpeg" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
-        <img src="assets/DSC01574.jpeg" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
-        <img src="assets/DSC01654.JPG" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
-        <img src="assets/7D8189E8-C36B-4B86-9C3F-65856EE8BC2A_1_105_c.jpeg" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
-        <img src="assets/DSC01560.jpeg" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
-        <img src="assets/DSC01612.jpg" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
-        <img src="assets/F9DDAC69-F559-4E1E-B487-2D1A3A2A9E2B_1_105_c.jpeg" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
-        <img src="assets/shoretopo2.png" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
-        <img src="assets/Harrison-FairbanksLO15.jpg" style="width: 100%" loading="lazy" decoding="async" onclick="onClick(this)" />
+        <img src="assets/E-wing5.2~.jpg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/IMG_1145.jpg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/DSC01569.jpeg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/DSC01574.jpeg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/DSC01654.JPG" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/7D8189E8-C36B-4B86-9C3F-65856EE8BC2A_1_105_c.jpeg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/DSC01560.jpeg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/DSC01612.jpg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/F9DDAC69-F559-4E1E-B487-2D1A3A2A9E2B_1_105_c.jpeg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/shoretopo2.png" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
+        <img src="assets/Harrison-FairbanksLO15.jpg" style="width: 100%" loading="lazy" decoding="async" fetchpriority="low" onclick="onClick(this)" />
       </div>
     </div>
 
