@@ -157,6 +157,8 @@
       var $el = $("#app");
       var rippleRefreshHandle;
       var rippleInterval;
+      var rippleIdleTimer;
+      var androidTouchThrottleUntil = 0;
       var rippleConfig;
 
       function isAndroidDevice() {
@@ -183,7 +185,85 @@
           randomStrengthRange: android ? 0.008 : 0.02,
           randomDropIntervalMs: android ? 8000 : 4500,
           enableRandomDrops: !android,
+          pauseAfterInteractionMs: android ? 220 : 0,
+          touchDropThrottleMs: android ? 80 : 0,
+          touchStrength: android ? 0.01 : 0,
         };
+      }
+
+      function clearRippleIdleTimer() {
+        if (rippleIdleTimer) {
+          clearTimeout(rippleIdleTimer);
+          rippleIdleTimer = null;
+        }
+      }
+
+      function ensureRipplesPlaying() {
+        try {
+          $el.ripples("play");
+        } catch (error) {}
+        clearRippleIdleTimer();
+      }
+
+      function scheduleAndroidRipplePause() {
+        if (!isAndroidDevice()) {
+          return;
+        }
+
+        clearRippleIdleTimer();
+        rippleIdleTimer = setTimeout(function () {
+          try {
+            $el.ripples("pause");
+          } catch (error) {}
+        }, rippleConfig.pauseAfterInteractionMs);
+      }
+
+      function handleAndroidTouchRipple(event) {
+        if (!isAndroidDevice() || !rippleConfig) {
+          return;
+        }
+
+        var now = Date.now();
+        if (now < androidTouchThrottleUntil) {
+          return;
+        }
+        androidTouchThrottleUntil = now + rippleConfig.touchDropThrottleMs;
+
+        var touch =
+          (event.touches && event.touches[0]) ||
+          (event.changedTouches && event.changedTouches[0]);
+        if (!touch) {
+          return;
+        }
+
+        var offset = $el.offset();
+        var x = touch.pageX - offset.left;
+        var y = touch.pageY - offset.top;
+        var width = $el.outerWidth();
+        var height = $el.outerHeight();
+
+        if (x < 0 || y < 0 || x > width || y > height) {
+          return;
+        }
+
+        ensureRipplesPlaying();
+        $el.ripples("drop", x, y, rippleConfig.dropRadius, rippleConfig.touchStrength);
+        scheduleAndroidRipplePause();
+      }
+
+      function bindAndroidRippleHandlers() {
+        $el.off(".androidRipples");
+        if (!isAndroidDevice()) {
+          return;
+        }
+
+        $el.on("touchstart.androidRipples touchmove.androidRipples", function (event) {
+          handleAndroidTouchRipple(event.originalEvent || event);
+        });
+
+        $el.on("touchend.androidRipples touchcancel.androidRipples", function () {
+          scheduleAndroidRipplePause();
+        });
       }
 
       function setupRipples() {
@@ -201,9 +281,12 @@
           resolution: rippleConfig.resolution,
           dropRadius: rippleConfig.dropRadius,
           perturbance: rippleConfig.perturbance,
-          interactive: true,
+          interactive: !isAndroidDevice(),
         });
         $el.ripples("show");
+
+        bindAndroidRippleHandlers();
+        scheduleAndroidRipplePause();
 
         if (rippleInterval) {
           clearInterval(rippleInterval);
