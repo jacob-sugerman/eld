@@ -157,7 +157,7 @@
       var $el = $("#app");
       var rippleRefreshHandle;
       var rippleInterval;
-      var androidSurfaceResetTimer;
+      var androidPauseTimer;
       var rippleConfig;
 
       function isAndroidDevice() {
@@ -184,26 +184,38 @@
           randomStrengthRange: android ? 0.008 : 0.02,
           randomDropIntervalMs: android ? 8000 : 4500,
           enableRandomDrops: !android,
-          androidResetAfterMs: android ? 900 : 0,
+          androidPauseAfterMs: android ? 700 : 0,
         };
       }
 
-      function clearAndroidSurfaceResetTimer() {
-        if (androidSurfaceResetTimer) {
-          clearTimeout(androidSurfaceResetTimer);
-          androidSurfaceResetTimer = null;
+      function clearAndroidPauseTimer() {
+        if (androidPauseTimer) {
+          clearTimeout(androidPauseTimer);
+          androidPauseTimer = null;
         }
       }
 
-      function scheduleAndroidSurfaceReset() {
+      function playRipples() {
+        try {
+          $el.ripples("play");
+        } catch (error) {}
+      }
+
+      function pauseRipples() {
+        try {
+          $el.ripples("pause");
+        } catch (error) {}
+      }
+
+      function scheduleAndroidPause() {
         if (!isAndroidDevice()) {
           return;
         }
 
-        clearAndroidSurfaceResetTimer();
-        androidSurfaceResetTimer = setTimeout(function () {
-          setupRipples();
-        }, rippleConfig.androidResetAfterMs);
+        clearAndroidPauseTimer();
+        androidPauseTimer = setTimeout(function () {
+          pauseRipples();
+        }, rippleConfig.androidPauseAfterMs);
       }
 
       function bindAndroidRippleHandlers() {
@@ -213,11 +225,12 @@
         }
 
         $el.on("touchstart.androidRipples touchmove.androidRipples", function () {
-          clearAndroidSurfaceResetTimer();
+          playRipples();
+          clearAndroidPauseTimer();
         });
 
         $el.on("touchend.androidRipples touchcancel.androidRipples", function () {
-          scheduleAndroidSurfaceReset();
+          scheduleAndroidPause();
         });
       }
 
@@ -241,7 +254,11 @@
         $el.ripples("show");
 
         bindAndroidRippleHandlers();
-        clearAndroidSurfaceResetTimer();
+        clearAndroidPauseTimer();
+
+        if (isAndroidDevice()) {
+          scheduleAndroidPause();
+        }
 
         if (rippleInterval) {
           clearInterval(rippleInterval);
