@@ -157,8 +157,7 @@
       var $el = $("#app");
       var rippleRefreshHandle;
       var rippleInterval;
-      var rippleIdleTimer;
-      var androidTouchThrottleUntil = 0;
+      var androidSurfaceResetTimer;
       var rippleConfig;
 
       function isAndroidDevice() {
@@ -180,75 +179,31 @@
         return {
           resolution: getRippleResolution(),
           dropRadius: android ? 18 : 10,
-          perturbance: android ? 0.006 : 0.01,
+          perturbance: android ? 0.008 : 0.01,
           randomStrengthMin: android ? 0.006 : 0.01,
           randomStrengthRange: android ? 0.008 : 0.02,
           randomDropIntervalMs: android ? 8000 : 4500,
           enableRandomDrops: !android,
-          pauseAfterInteractionMs: android ? 220 : 0,
-          touchDropThrottleMs: android ? 80 : 0,
-          touchStrength: android ? 0.01 : 0,
+          androidResetAfterMs: android ? 900 : 0,
         };
       }
 
-      function clearRippleIdleTimer() {
-        if (rippleIdleTimer) {
-          clearTimeout(rippleIdleTimer);
-          rippleIdleTimer = null;
+      function clearAndroidSurfaceResetTimer() {
+        if (androidSurfaceResetTimer) {
+          clearTimeout(androidSurfaceResetTimer);
+          androidSurfaceResetTimer = null;
         }
       }
 
-      function ensureRipplesPlaying() {
-        try {
-          $el.ripples("play");
-        } catch (error) {}
-        clearRippleIdleTimer();
-      }
-
-      function scheduleAndroidRipplePause() {
+      function scheduleAndroidSurfaceReset() {
         if (!isAndroidDevice()) {
           return;
         }
 
-        clearRippleIdleTimer();
-        rippleIdleTimer = setTimeout(function () {
-          try {
-            $el.ripples("pause");
-          } catch (error) {}
-        }, rippleConfig.pauseAfterInteractionMs);
-      }
-
-      function handleAndroidTouchRipple(event) {
-        if (!isAndroidDevice() || !rippleConfig) {
-          return;
-        }
-
-        var now = Date.now();
-        if (now < androidTouchThrottleUntil) {
-          return;
-        }
-        androidTouchThrottleUntil = now + rippleConfig.touchDropThrottleMs;
-
-        var touch =
-          (event.touches && event.touches[0]) ||
-          (event.changedTouches && event.changedTouches[0]);
-        if (!touch) {
-          return;
-        }
-
-        var offset = $el.offset();
-        var x = touch.pageX - offset.left;
-        var y = touch.pageY - offset.top;
-        var width = $el.outerWidth();
-        var height = $el.outerHeight();
-
-        if (x < 0 || y < 0 || x > width || y > height) {
-          return;
-        }
-
-        ensureRipplesPlaying();
-        $el.ripples("drop", x, y, rippleConfig.dropRadius, rippleConfig.touchStrength);
-        scheduleAndroidRipplePause();
+        clearAndroidSurfaceResetTimer();
+        androidSurfaceResetTimer = setTimeout(function () {
+          setupRipples();
+        }, rippleConfig.androidResetAfterMs);
       }
 
       function bindAndroidRippleHandlers() {
@@ -257,12 +212,12 @@
           return;
         }
 
-        $el.on("touchstart.androidRipples touchmove.androidRipples", function (event) {
-          handleAndroidTouchRipple(event.originalEvent || event);
+        $el.on("touchstart.androidRipples touchmove.androidRipples", function () {
+          clearAndroidSurfaceResetTimer();
         });
 
         $el.on("touchend.androidRipples touchcancel.androidRipples", function () {
-          scheduleAndroidRipplePause();
+          scheduleAndroidSurfaceReset();
         });
       }
 
@@ -281,12 +236,12 @@
           resolution: rippleConfig.resolution,
           dropRadius: rippleConfig.dropRadius,
           perturbance: rippleConfig.perturbance,
-          interactive: !isAndroidDevice(),
+          interactive: true,
         });
         $el.ripples("show");
 
         bindAndroidRippleHandlers();
-        scheduleAndroidRipplePause();
+        clearAndroidSurfaceResetTimer();
 
         if (rippleInterval) {
           clearInterval(rippleInterval);
