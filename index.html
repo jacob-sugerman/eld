@@ -178,10 +178,11 @@
         return {
           resolution: getRippleResolution(),
           dropRadius: android ? 18 : 10,
-          perturbance: android ? 0.008 : 0.01,
+          perturbance: android ? 0.006 : 0.01,
           randomStrengthMin: android ? 0.006 : 0.01,
           randomStrengthRange: android ? 0.008 : 0.02,
           randomDropIntervalMs: android ? 8000 : 4500,
+          enableRandomDrops: !android,
         };
       }
 
@@ -208,13 +209,15 @@
           clearInterval(rippleInterval);
         }
 
-        for (let index = 0; index < 3; index++) {
-          randomDrop();
-        }
+        if (rippleConfig.enableRandomDrops) {
+          for (let index = 0; index < 3; index++) {
+            randomDrop();
+          }
 
-        rippleInterval = setInterval(function () {
-          randomDrop();
-        }, rippleConfig.randomDropIntervalMs);
+          rippleInterval = setInterval(function () {
+            randomDrop();
+          }, rippleConfig.randomDropIntervalMs);
+        }
       }
 
       function randomDrop() {
