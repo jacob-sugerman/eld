@@ -157,6 +157,11 @@
       var $el = $("#app");
       var rippleRefreshHandle;
       var rippleInterval;
+      var rippleConfig;
+
+      function isAndroidDevice() {
+        return /Android/i.test(navigator.userAgent || "");
+      }
 
       function getRippleResolution() {
         var dpr = Math.min(window.devicePixelRatio || 1, 3);
@@ -167,19 +172,35 @@
         return Math.min(Math.max(scaledResolution, 512), 1024);
       }
 
+      function getRippleConfig() {
+        var android = isAndroidDevice();
+
+        return {
+          resolution: getRippleResolution(),
+          dropRadius: android ? 18 : 10,
+          perturbance: android ? 0.008 : 0.01,
+          randomStrengthMin: android ? 0.006 : 0.01,
+          randomStrengthRange: android ? 0.008 : 0.02,
+          randomDropIntervalMs: android ? 8000 : 4500,
+        };
+      }
+
       function setupRipples() {
         if (!$.fn.ripples) {
           return;
         }
+
+        rippleConfig = getRippleConfig();
 
         try {
           $el.ripples("destroy");
         } catch (error) {}
 
         $el.ripples({
-          resolution: getRippleResolution(),
-          dropRadius: 10,
-          perturbance: 0.01,
+          resolution: rippleConfig.resolution,
+          dropRadius: rippleConfig.dropRadius,
+          perturbance: rippleConfig.perturbance,
+          interactive: true,
         });
         $el.ripples("show");
 
@@ -193,14 +214,20 @@
 
         rippleInterval = setInterval(function () {
           randomDrop();
-        }, 4500);
+        }, rippleConfig.randomDropIntervalMs);
       }
 
       function randomDrop() {
+        if (!rippleConfig) {
+          rippleConfig = getRippleConfig();
+        }
+
         var x = Math.random() * $el.outerWidth();
         var y = Math.random() * $el.outerHeight();
-        var dropRadius = 10;
-        var strength = 0.01 + Math.random() * 0.02;
+        var dropRadius = rippleConfig.dropRadius;
+        var strength =
+          rippleConfig.randomStrengthMin +
+          Math.random() * rippleConfig.randomStrengthRange;
         $el.ripples("drop", x, y, dropRadius, strength);
       }
 
