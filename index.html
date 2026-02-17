@@ -18,6 +18,51 @@
         height: 100vh;
       }
 
+      body {
+        margin: 0;
+      }
+
+      .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        pointer-events: none;
+      }
+
+      .hero-overlay .container {
+        height: 100%;
+      }
+
+      .hero-overlay a,
+      .hero-overlay .hero-link,
+      .hero-overlay h2 {
+        pointer-events: auto;
+      }
+
+      .hero-link {
+        background: transparent;
+        border: 0;
+        padding: 0;
+        margin: 0;
+        color: inherit;
+        cursor: pointer;
+        font: inherit;
+        text-align: inherit;
+        text-shadow: 3px 5px 9px black;
+      }
+
+      .hero-link:hover {
+        color: orange;
+        text-decoration: underline;
+      }
+
+      .hero-link:active {
+        color: green;
+        text-decoration: underline;
+      }
+
       a:link {
         color: none;
         background-color: transparent;
@@ -41,10 +86,7 @@
         text-decoration: underline;
       }
 
-      <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1">
-        .container {
+      .container {
         position: relative;
         text-align: center;
       }
@@ -83,6 +125,10 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+      }
+
+      .centered h2 {
+        text-align: left;
       }
 
       .w3-third img {
@@ -131,33 +177,37 @@
       }, 4500);
     </script>
 
-    <div class="w3-container">
+    <div class="w3-container hero-overlay">
       <div class="container">
         <div class="bottom-left w3-text-white w3-xlarge">
-          <a href="contact.html" />
-          <h2>Contact</h2>
+          <a href="contact.html">
+            <h2>Contact</h2>
+          </a>
         </div>
         <div class="top-left w3-text-white">
-          <a href="portfolio.html" />
-          <h2>Portfolio</h2>
+          <a href="portfolio.html">
+            <h2>Portfolio</h2>
+          </a>
         </div>
         <div class="top-right w3-text-white">
-          <a href="design.html" />
-          <h2>Services</h2>
+          <a href="design.html">
+            <h2>Services</h2>
+          </a>
         </div>
         <div class="bottom-right w3-text-white">
-          <a href="bio.html" />
-          <h2>About</h2>
+          <a href="bio.html">
+            <h2>About</h2>
+          </a>
         </div>
         <div class="centered w3-text-white">
-          <a href="portfolio.html">
-          <h2>Ecology<br />Landscape<br />Design</h2>
-          </a>
+          <button type="button" class="hero-link" id="center-scroll-link">
+            <h2>Ecology<br />Landscape<br />Design</h2>
+          </button>
         </div>
       </div>
     </div>
 
-    <div class="w3-auto w3-padding-64 w3-container">
+    <div id="interactive-grid" class="w3-auto w3-padding-64 w3-container">
       
       
       <div class="w3-third w3-padding-32">
@@ -389,6 +439,93 @@
       >
       <span>Ecology Landscape Design</span>
     </footer>
+
+    <script>
+      var centerScrollLink = document.getElementById("center-scroll-link");
+      var interactiveGrid = document.getElementById("interactive-grid");
+      var scrollAnimationFrame;
+      var aosDurationMs = 1900;
+      var aosOffsetPx = 120;
+
+      function easeInOutSine(progress) {
+        return -(Math.cos(Math.PI * progress) - 1) / 2;
+      }
+
+      function inverseEaseInOutSine(easedProgress) {
+        var bounded = clamp(easedProgress, 0, 1);
+        return Math.acos(1 - 2 * bounded) / Math.PI;
+      }
+
+      function clamp(value, min, max) {
+        return Math.min(Math.max(value, min), max);
+      }
+
+      function getAbsoluteTop(element) {
+        return element.getBoundingClientRect().top + window.pageYOffset;
+      }
+
+      function getSynchronizedDuration(startY, endY) {
+        var distance = endY - startY;
+        if (distance <= 0) {
+          return aosDurationMs;
+        }
+
+        var firstAnimatedImage = interactiveGrid.querySelector("img[data-aos]");
+        if (!firstAnimatedImage) {
+          return aosDurationMs;
+        }
+
+        var imageTop = getAbsoluteTop(firstAnimatedImage);
+        var triggerScrollY = imageTop - (window.innerHeight - aosOffsetPx);
+        var triggerDistanceProgress = clamp(
+          (triggerScrollY - startY) / distance,
+          0,
+          0.98
+        );
+        var triggerTimeProgress = inverseEaseInOutSine(triggerDistanceProgress);
+
+        return clamp(
+          aosDurationMs / (1 - triggerTimeProgress),
+          aosDurationMs,
+          7000
+        );
+      }
+
+      function scrollToCenteredGridGracefully() {
+        if (scrollAnimationFrame) {
+          cancelAnimationFrame(scrollAnimationFrame);
+        }
+
+        var startY = window.pageYOffset;
+        var maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        var gridCenter =
+          interactiveGrid.offsetTop + interactiveGrid.offsetHeight / 2;
+        var endY = clamp(gridCenter - window.innerHeight / 2, 0, maxScroll);
+        var duration = getSynchronizedDuration(startY, endY);
+        var distance = endY - startY;
+        var startTime = performance.now();
+
+        function step(now) {
+          var elapsed = now - startTime;
+          var progress = Math.min(elapsed / duration, 1);
+          var eased = easeInOutSine(progress);
+
+          window.scrollTo(0, startY + distance * eased);
+
+          if (progress < 1) {
+            scrollAnimationFrame = requestAnimationFrame(step);
+          } else {
+            window.scrollTo(0, endY);
+          }
+        }
+
+        scrollAnimationFrame = requestAnimationFrame(step);
+      }
+
+      centerScrollLink.addEventListener("click", function () {
+        scrollToCenteredGridGracefully();
+      });
+    </script>
 
   <script>
               var x = document.getElementById("trigger6");
