@@ -1,6 +1,6 @@
 (function () {
   var FAVICON_SYMBOL = "𓆏";
-  var CANVAS_SIZE = 64;
+  var CANVAS_SIZE = 63;
   var FONT_SIZE = Math.round(CANVAS_SIZE * 0.82);
   var X_POSITION = CANVAS_SIZE / 2;
   var Y_POSITION = CANVAS_SIZE / 2 + CANVAS_SIZE * 0.05;
