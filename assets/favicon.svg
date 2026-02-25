@@ -1,11 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <style>
+    /* Default: light mode (black frog) */
+    .frog { fill: #000; }
+
+    /* Dark mode: white frog */
+    @media (prefers-color-scheme: dark) {
+      .frog { fill: #fff; }
+    }
+  </style>
+
   <text
+    class="frog"
     x="61"
     y="76"
     text-anchor="middle"
     dominant-baseline="middle"
     font-size="86"
-    fill="#ffffff"
     font-family="Segoe UI Symbol, Noto Sans Symbols 2, Apple Symbols, sans-serif"
   >𓆏</text>
 </svg>
