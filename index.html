@@ -257,7 +257,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/85188/jquery.ripples-min.js"></script>
     <!-- <script src="src/index.js"></script> -->
-    <script>
+   <script>
       var $el = $("#app");
       var rippleRefreshHandle;
       var rippleInterval;
@@ -281,9 +281,9 @@
         } catch (error) {}
 
         $el.ripples({
-          resolution: getRippleResolution(),
-          dropRadius: 10,
-          perturbance: 0.01,
+          resolution: 512,
+          dropRadius: 20,
+          perturbance: 0.04
         });
         $el.ripples("show");
 
