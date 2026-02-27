@@ -1,0 +1,10 @@
+RewriteEngine On
+
+# Force a single canonical host/protocol.
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} ^www\.ecologylandscapedesign\.com$ [NC]
+RewriteRule ^ https://ecologylandscapedesign.com%{REQUEST_URI} [L,R=301]
+
+# Prevent duplicate homepage URLs.
+RewriteCond %{THE_REQUEST} \s/+index\.html[?\s] [NC]
+RewriteRule ^index\.html$ https://ecologylandscapedesign.com/ [L,R=301]
