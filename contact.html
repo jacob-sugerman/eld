@@ -264,6 +264,44 @@ img {
     }
 
 </style>
+   /* Make checkboxes round */
+      .contact-form input[type="checkbox"] {
+        appearance: none;
+        -webkit-appearance: none;
+        background-color: #fff;
+        border: 2px solid #333;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        position: relative;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+      }
+
+      .contact-form input[type="checkbox"]:checked {
+        background-color: #1e90ff;
+        border-color: #1e90ff;
+      }
+
+      .contact-form input[type="checkbox"]::after {
+        content: '';
+        display: block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #fff;
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+
+      .contact-form input[type="checkbox"]:checked::after {
+        background: #fff;
+        opacity: 1;
+      }
 
   <script type="application/ld+json">
 {
@@ -358,11 +396,11 @@ img {
       <div style="margin-top: 8px;">
         <div style="display: flex; align-items: center; margin-bottom: 10px;">
           <span style="font-weight: normal;">Design</span>
-          <input type="checkbox" class="checkbox-round" name="services" value="design" style="margin-left: 8px; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
+          <input type="checkbox" name="services" value="design" style="margin-left: 8px; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
         </div>
         <div style="display: flex; align-items: center; margin-bottom: 10px;">
           <span style="font-weight: normal;">Native planting or raingarden installation</span>
-          <input type="checkbox" class="checkbox-round" name="services" value="installation" style="margin-left: 8px; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
+          <input type="checkbox" name="services" value="installation" style="margin-left: 8px; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
         </div>
          <div style="display: flex; align-items: center; margin-bottom: 10px;">
           <span style="font-weight: normal;">Custom stonework or hardscaping</span>
