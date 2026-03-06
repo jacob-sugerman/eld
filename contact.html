@@ -262,44 +262,69 @@ img {
         font-size: 22px;
       }
     }
-   /* Make checkboxes round */
-      .contact-form input[type="checkbox"] {
-        appearance: none;
-        -webkit-appearance: none;
-        background-color: #fff;
-        border: 2px solid #333;
-        border-radius: 50%;
-        width: 18px;
-        height: 18px;
-        cursor: pointer;
-        position: relative;
-        transition: border-color 0.2s, box-shadow 0.2s;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.08);
-      }
+    .service-group {
+      display: block;
+      margin-bottom: 20px;
+    }
 
-      .contact-form input[type="checkbox"]:checked {
-        background-color: #1e90ff;
-        border-color: #1e90ff;
-      }
+    .service-options {
+      margin-top: 8px;
+    }
 
-      .contact-form input[type="checkbox"]::after {
-        content: '';
-        display: block;
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: #fff;
-        position: absolute;
-        top: 3px;
-        left: 3px;
-        opacity: 0;
-        transition: opacity 0.2s;
-      }
+    .contact-form label.service-option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: row;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-weight: normal;
+      cursor: pointer;
+    }
 
-      .contact-form input[type="checkbox"]:checked::after {
-        background: #fff;
-        opacity: 1;
-      }
+    .contact-form label.service-option:last-child {
+      margin-bottom: 0;
+    }
+
+    .contact-form input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      margin: 0;
+      padding: 0;
+      border: 1.5px solid #333;
+      border-radius: 50%;
+      background: #fff;
+      display: grid;
+      place-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .contact-form input[type="checkbox"]::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #1e90ff;
+      transform: scale(0);
+      transition: transform 0.15s ease-in-out;
+    }
+
+    .contact-form input[type="checkbox"]:checked {
+      border-color: #1e90ff;
+    }
+
+    .contact-form input[type="checkbox"]:checked::before {
+      transform: scale(1);
+    }
+
+    .contact-form input[type="checkbox"]:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.2);
+    }
+
 </style>
 
 
@@ -391,35 +416,36 @@ img {
       <input type="email" name="email" required>
     </label>
 
- <label style="display: block; margin-bottom: 20px;">
-      <strong >How Can We Help?</strong>
-      <div style="margin-top: 8px;">
-        <div style="display: flex; align-items: center; margin-bottom: 10px;">
-          <span style="font-weight: normal;">Design</span>
-          <input type="checkbox" name="services" value="design" style="margin-left: 8px; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
-        </div>
-        <div style="display: flex; align-items: center; margin-bottom: 10px;">
-          <span style="font-weight: normal;">Native planting or raingarden installation</span>
-          <input type="checkbox" name="services" value="installation" style="margin-left: 8px; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
-        </div>
-         <div style="display: flex; align-items: center; margin-bottom: 10px;">
-          <span style="font-weight: normal;">Custom stonework or hardscaping</span>
-          <input type="checkbox" name="services" value="stone" style="margin-left: 8px; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
-        </div>
-           <div style="display: flex; align-items: center; margin-bottom: 10px;">
-          <span style="font-weight: normal;">Consultation</span>
-          <input type="checkbox" name="services" value="assessment" style="margin-left: 8px; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
-        </div>
-        <div style="display: flex; align-items: center; margin-bottom: 10px;">
-          <span style="font-weight: normal;">Drainage and stormwater strategies</span>
-          <input type="checkbox" name="services" value="stormwater" style="margin-left: 8px; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
-        </div>
-        <div style="display: flex; align-items: center;">
-          <span style="font-weight: normal;">Maintenance</span>
-          <input type="checkbox" name="services" value="maintenance" style="margin-left: 8px; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
-        </div>
+ <div class="service-group">
+      <strong>How Can We Help?</strong>
+      <div class="service-options">
+        <label class="service-option">
+          <span>Ecological design services</span>
+          <input type="checkbox" name="services" value="design">
+        </label>
+        <label class="service-option">
+          <span>Native planting or raingarden installation</span>
+          <input type="checkbox" name="services" value="installation">
+        </label>
+        <label class="service-option">
+          <span>Custom stonework or hardscaping</span>
+          <input type="checkbox" name="services" value="stone">
+        </label>
+        <label class="service-option">
+          <span>Ecological consultation</span>
+          <input type="checkbox" name="services" value="assessment">
+        </label>
+        <label class="service-option">
+          <span>Stormwater strategies</span>
+          <input type="checkbox" name="services" value="stormwater">
+        </label>
+        <label class="service-option">
+          <span>Ecological maintenance</span>
+          <input type="checkbox" name="services" value="maintenance">
+        </label>
       </div>
-    </label>
+    </div>
+
 
     <label>
       <strong>Tell Us About Your Landscape</strong>
