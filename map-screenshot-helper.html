@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Map Screenshot Helper</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* Frog SVG aspect ratio: 686.85 × 639.96 ≈ 1.073 : 1 */
+    html, body {
+      width: 687px;
+      height: 640px;
+      overflow: hidden;
+    }
+    #map {
+      width: 687px;
+      height: 640px;
+    }
+    #map .leaflet-control-container { display: none; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
+  <script>
+    var map = L.map('map', {
+      center: [40.0, -82.0],
+      zoom: 2.3,
+      zoomSnap: 0,
+      zoomControl: false,
+      attributionControl: false,
+      scrollWheelZoom: false,
+      doubleClickZoom: false,
+      dragging: false,
+      keyboard: false,
+      touchZoom: false
+    });
+
+    L.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      { maxZoom: 19 }
+    ).addTo(map);
+  </script>
+</body>
+</html>

@@ -252,6 +252,109 @@ img {
       margin-top: 20px;
     }
 
+    .service-picker {
+      margin: 18px 0 24px;
+      text-align: center;
+    }
+
+    .service-list {
+      list-style: none;
+      padding: 0;
+      margin: 12px auto 0;
+      max-width: 520px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .service-list li {
+      width: 100%;
+    }
+
+    .service-option {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 8px;
+      width: 100%;
+      cursor: pointer;
+      font-size: 15px;
+      color: #222;
+      text-align: left;
+      white-space: normal;
+    }
+
+    .checkbox-indicator {
+      width: 18px;
+      height: 18px;
+      border: 1.5px solid #666;
+      border-radius: 3px;
+      background: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: transparent;
+      font-size: 13px;
+      line-height: 1;
+      margin-top: 1px;
+      flex-shrink: 0;
+      transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .service-option input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+      width: 1px;
+      height: 1px;
+      pointer-events: none;
+    }
+
+    .service-symbol {
+      width: 18px;
+      height: 18px;
+      border: 1px solid #a0a0a0;
+      border-radius: 4px;
+      background: #f7f7f7;
+      color: #555;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      font-size: 12px;
+      margin-top: 1px;
+      transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .service-option input[type="checkbox"]:checked + .checkbox-indicator {
+      background: #2f7d32;
+      border-color: #2f7d32;
+      color: #fff;
+    }
+
+    .service-option input[type="checkbox"]:checked + .checkbox-indicator::before {
+      content: "✓";
+      font-weight: 700;
+    }
+
+    .service-option input[type="checkbox"]:checked + .checkbox-indicator + .service-symbol {
+      background: #2f7d32;
+      border-color: #2f7d32;
+      color: #fff;
+    }
+
+    .service-option input[type="checkbox"]:focus-visible + .checkbox-indicator {
+      outline: 2px solid #2f7d32;
+      outline-offset: 2px;
+    }
+
+    .service-label {
+      display: inline-block;
+      line-height: 1.35;
+    }
+
     @media (max-width: 768px) {
       .contact-form {
         margin: 40px 20px;
@@ -336,17 +439,62 @@ img {
   <h2>Let’s Talk About Your Landscape</h2>
 
   <p>
-    Ecology Landscape Design works with people of all kinds to create landscapes that are
+    Ecology Landscape Design works with homeowners to create landscapes that are
     functional, resilient, and rooted in local ecology.
   </p>
 
   <p>
-    Whether you’re interested in native plants, dry stonework, rain gardens,
-    drainage and stormwater solutions, or other ecological services,
-    this form is a first step in understanding your landscape and goals.
+    This form is a first step in understanding your landscape and goals. Let us know how we can help: 
   </p>
 
   <form id="contactForm" action="https://formspree.io/f/meeeajar" method="POST">
+    <div class="service-picker" role="group" aria-label="Landscape services">
+      <ul class="service-list">
+        <li>
+          <label class="service-option">
+            <input type="checkbox" name="services[]" value="Native plants">
+            <span class="checkbox-indicator" aria-hidden="true"></span>
+            <span class="service-symbol" aria-hidden="true">☘</span>
+            <span class="service-label">native plants</span>
+          </label>
+        </li>
+        <li>
+          <label class="service-option">
+            <input type="checkbox" name="services[]" value="Dry stonework">
+            <span class="checkbox-indicator" aria-hidden="true"></span>
+            <span class="service-symbol" aria-hidden="true">◈</span>
+            <span class="service-label">dry stonework</span>
+          </label>
+        </li>
+        <li>
+          <label class="service-option">
+            <input type="checkbox" name="services[]" value="Rain gardens">
+            <span class="checkbox-indicator" aria-hidden="true"></span>
+            <span class="service-symbol" aria-hidden="true">☂</span>
+            <span class="service-label">rain gardens</span>
+          </label>
+        </li>
+        <li>
+          <label class="service-option">
+            <input type="checkbox" name="services[]" value="Drainage and stormwater solutions">
+            <span class="checkbox-indicator" aria-hidden="true"></span>
+            <span class="service-symbol" aria-hidden="true">≋</span>
+            <span class="service-label">drainage and stormwater solutions</span>
+          </label>
+        </li>
+        <li>
+          <label class="service-option">
+            <input type="checkbox" name="services[]" value="Other ecological services">
+            <span class="checkbox-indicator" aria-hidden="true"></span>
+            <span class="service-symbol" aria-hidden="true">✶</span>
+            <span class="service-label">other ecological services</span>
+          </label>
+        </li>
+      </ul>
+    </div>
+
+    <input type="hidden" name="selected_services" id="selectedServices" value="">
+
     <label>
       <strong>Name</strong>
       <input type="text" name="name" required>
@@ -392,9 +540,30 @@ img {
       const form = document.getElementById('contactForm');
       const statusDiv = document.getElementById('formStatus');
 
+      function updateSelectedServicesField() {
+        const selectedServicesField = document.getElementById('selectedServices');
+        const selected = Array.from(
+          document.querySelectorAll('input[name="services[]"]:checked')
+        ).map(input => input.value);
+
+        if (selectedServicesField) {
+          selectedServicesField.value = selected.length
+            ? selected.join(', ')
+            : 'None selected';
+        }
+      }
+
+      document.querySelectorAll('input[name="services[]"]').forEach(input => {
+        input.addEventListener('change', updateSelectedServicesField);
+      });
+
+      updateSelectedServicesField();
+
       if (form) {
         form.addEventListener('submit', function (e) {
           e.preventDefault();
+
+          updateSelectedServicesField();
 
           const formData = new FormData(form);
 
@@ -409,6 +578,7 @@ img {
               statusDiv.classList.remove('error');
               statusDiv.classList.add('success');
               form.reset();
+              updateSelectedServicesField();
               
               // Auto-hide the success message after 5 seconds
               setTimeout(() => {

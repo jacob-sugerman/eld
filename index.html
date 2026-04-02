@@ -479,7 +479,6 @@
         }
 
         .location-copy p {
-          text-wrap: balance;
           text-align: left;
         }
 
@@ -523,7 +522,8 @@
           transform: none;
           flex: 1;
           min-width: 0;
-          gap: 4px;
+          gap: 0;
+          justify-content: space-evenly;
         }
 
         .footer-title {
@@ -548,8 +548,7 @@
         }
 
         .footer-icon-link {
-          flex: 1 1 0;
-          min-width: 0;
+          flex: 0 0 auto;
           height: auto;
         }
 
@@ -745,9 +744,7 @@
       for (let index = 0; index < 3; index++) {
         randomDrop();
       }
-      setInterval(function () {
-        randomDrop();
-      }, 4500);
+      setInterval(randomDrop, 4500);
     </script>
 
     <div class="w3-container hero-overlay">
@@ -1276,7 +1273,7 @@ to get oriented, then open our Google listing to see our typical service area.
         function scheduleEnable(delayMs) {
           if (hintEnabled || enableScheduled) return;
           enableScheduled = true;
-          setTimeout(enableHint, Math.max(delayMs || 0, 0));
+          setTimeout(enableHint, delayMs || 0);
         }
 
         function applyShow() {
@@ -1368,7 +1365,7 @@ to get oriented, then open our Google listing to see our typical service area.
             finished = true;
             if (transitionFallbackTimer) clearTimeout(transitionFallbackTimer);
             effectiveLastImg.removeEventListener("transitionend", onTransitionEnd);
-            effectiveLastImg.removeEventListener("animationend", onAnimationEnd);
+            effectiveLastImg.removeEventListener("animationend", finalizeEnable);
             scheduleEnable(0);
           }
 
@@ -1378,12 +1375,8 @@ to get oriented, then open our Google listing to see our typical service area.
             }
           }
 
-          function onAnimationEnd() {
-            finalizeEnable();
-          }
-
           effectiveLastImg.addEventListener("transitionend", onTransitionEnd);
-          effectiveLastImg.addEventListener("animationend", onAnimationEnd);
+          effectiveLastImg.addEventListener("animationend", finalizeEnable);
           // Mobile browsers may skip transitionend during heavy scrolling.
           transitionFallbackTimer = setTimeout(finalizeEnable, aosDurationMs + 150);
         }
@@ -1448,99 +1441,22 @@ to get oriented, then open our Google listing to see our typical service area.
     </script>
 
   <script>
-              var x = document.getElementById("trigger6");
-      x.addEventListener("click", FunctionGoat);
-
-      function FunctionGoat() {
-        document.getElementById("trigger6").style.opacity = "1";
-
-        var x = document.getElementById("Demo4");
-              if (x.className.indexOf("w3-show") == -1) {
-                x.className += " w3-show";
-              } else {
-                x.className = x.className.replace(" w3-show", "");
-              }
-            }
-    </script>      
-      
-  <script>
-              var x = document.getElementById("trigger5");
-      x.addEventListener("click", FunctionGrass);
-
-      function FunctionGrass() {
-        document.getElementById("trigger5").style.opacity = "1";
-
-        var x = document.getElementById("Demo5");
-              if (x.className.indexOf("w3-show") == -1) {
-                x.className += " w3-show";
-              } else {
-                x.className = x.className.replace(" w3-show", "");
-              }
-            }
-    </script>
-
- <script>
-              var x = document.getElementById("trigger4");
-      x.addEventListener("click", FunctionParsnip);
-
-      function FunctionParsnip() {
-        document.getElementById("trigger4").style.opacity = "1";
-
-        var x = document.getElementById("Demo2");
-              if (x.className.indexOf("w3-show") == -1) {
-                x.className += " w3-show";
-              } else {
-                x.className = x.className.replace(" w3-show", "");
-              }
-            }
-    </script>
-    <script>
-      var x = document.getElementById("trigger2");
-      x.addEventListener("click", myFunction3);
-
-      function myFunction3() {
-        document.getElementById("trigger2").style.opacity = "1";
-
-        var x = document.getElementById("Demo3");
-        if (x.className.indexOf("w3-show") == -1) {
-          x.className += " w3-show";
-        } else {
-          x.className = x.className.replace(" w3-show", "");
-        }
-      }
-    </script>
-
-    <script>
-      var x = document.getElementById("trigger");
-      x.addEventListener("click", myFunction);
-
-      function myFunction() {
-        document.getElementById("trigger").style.opacity = "1";
-
-        var x = document.getElementById("Demo");
-        if (x.className.indexOf("w3-show") == -1) {
-          x.className += " w3-show";
-        } else {
-          x.className = x.className.replace(" w3-show", "");
-        }
-      }
-    </script>
-
-    <script>
-              var x = document.getElementById("trigger3");
-      x.addEventListener("click", FunctionPye);
-
-      function FunctionPye() {
-        document.getElementById("trigger3").style.opacity = "1";
-
-        var x = document.getElementById("Demo6");
-              if (x.className.indexOf("w3-show") == -1) {
-                x.className += " w3-show";
-              } else {
-                x.className = x.className.replace(" w3-show", "");
-              }
-            }
-    </script>
+    [
+      ['trigger',  'Demo'],
+      ['trigger2', 'Demo3'],
+      ['trigger3', 'Demo6'],
+      ['trigger4', 'Demo2'],
+      ['trigger5', 'Demo5'],
+      ['trigger6', 'Demo4']
+    ].forEach(function (pair) {
+      var btn = document.getElementById(pair[0]);
+      var panel = document.getElementById(pair[1]);
+      btn.addEventListener('click', function () {
+        btn.style.opacity = '1';
+        panel.classList.toggle('w3-show');
+      });
+    });
+  </script>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
     <script>
@@ -1656,7 +1572,6 @@ to get oriented, then open our Google listing to see our typical service area.
           }
         });
 
-        // Any user interaction breaks the "at rest" state so the next pin click animates.
         // Any user interaction breaks the "at rest" state so the next pin click animates.
         map.on('dragstart', function () {
           atRestState = false;
