@@ -22,6 +22,7 @@
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
@@ -185,6 +186,461 @@
         white-space: nowrap;
         border: 0;
       }
+
+      .site-footer {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 58px;
+        padding-top: 6px !important;
+        padding-bottom: 6px !important;
+      }
+
+      .footer-home-link {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      .footer-title {
+        text-align: center;
+      }
+
+      .footer-title-break {
+        display: none;
+      }
+
+      .footer-social-links {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: inline-flex;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .footer-icon-link {
+        height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        color: #111;
+        background: transparent;
+        text-shadow: none;
+      }
+
+      .footer-icon-link:hover {
+        color: #111;
+        border-color: transparent;
+        text-decoration: none;
+        filter: brightness(1.05);
+      }
+
+      .footer-icon-link svg,
+      .footer-icon-link img {
+        width: auto;
+        height: 32px;
+        display: block;
+      }
+
+      .footer-icon-link svg {
+        fill: currentColor;
+      }
+
+      .footer-icon-link--instagram {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+      }
+
+      .footer-icon-link--instagram:hover {
+        color: #111;
+        border-color: transparent;
+      }
+
+      .footer-icon-link--bluethumb {
+        padding: 0;
+      }
+
+      .footer-icon-link--bluethumb img {
+        height: 38px;
+      }
+
+      .mobile-footer-links {
+        display: none;
+      }
+
+      .location-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 48px;
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      .location-copy {
+        max-width: 420px;
+        color: #213321;
+        text-shadow: none;
+      }
+
+      .location-copy h2,
+      .location-copy p {
+        text-shadow: none;
+      }
+
+      .location-copy h2 {
+        margin: 0 0 14px;
+        font-size: clamp(2rem, 2.8vw, 2.8rem);
+        line-height: 1;
+      }
+
+      .location-copy p {
+        margin: 0 0 18px;
+        font-size: 1rem;
+        line-height: 1.7;
+      }
+
+      .location-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 0 22px;
+        border-radius: 999px;
+        border: 1px solid rgba(33, 51, 33, 0.2);
+        background: #f4f1e7;
+        color: #213321;
+        text-decoration: none;
+        text-shadow: none;
+        box-shadow: none;
+        transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+      }
+
+      .location-link:hover {
+        color: #213321;
+        background: #e4ede4;
+        text-decoration: none;
+        transform: translateY(-2px);
+        box-shadow: 0 14px 28px rgba(33, 51, 33, 0.16);
+      }
+
+      button.location-link {
+        font: inherit;
+        cursor: pointer;
+      }
+
+      .location-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .location-map-shell {
+        position: relative;
+        --frog-fill-mask: url("assets/frog-outline.svg");
+        flex: 0 0 min(560px, 92vw);
+        width: min(560px, 92vw);
+        aspect-ratio: 686.85 / 639.96;
+        display: grid;
+        place-items: center;
+        isolation: isolate;
+      }
+
+      .location-map-shell::before {
+        content: none;
+      }
+
+      .location-map-shell::after {
+        content: none;
+      }
+
+      .location-map-mask {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        -webkit-mask-image: var(--frog-fill-mask);
+        mask-image: var(--frog-fill-mask);
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-mode: alpha;
+        mask-mode: alpha;
+        background: transparent;
+      }
+
+      #eld-map {
+        position: absolute;
+        inset: 0;
+      }
+
+      #eld-map .leaflet-control-container {
+        display: none;
+      }
+
+      #eld-map .leaflet-tile-pane,
+      #eld-map .leaflet-shadow-pane,
+      #eld-map .leaflet-marker-pane,
+      #eld-map .leaflet-overlay-pane {
+        will-change: transform;
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+        image-rendering: auto;
+      }
+
+      .eld-pin-marker {
+        width: 28px;
+        height: 36px;
+        cursor: pointer;
+        overflow: visible;
+        /* drop-shadow via filter causes per-frame repaints during animation —
+           use a subtle SVG shadow on the path instead (see inline SVG) */
+      }
+
+      .eld-map-popup .leaflet-popup-content-wrapper {
+        background: rgba(244, 241, 233, 0.97);
+        border: none;
+        border-radius: 999px;
+        box-shadow: 0 4px 24px rgba(33, 51, 33, 0.18), 0 1px 4px rgba(33, 51, 33, 0.10);
+        padding: 0;
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+      }
+
+      .eld-map-popup .leaflet-popup-tip-container {
+        display: block;
+      }
+
+      .eld-map-popup .leaflet-popup-tip {
+        background: rgba(244, 241, 233, 0.97);
+        box-shadow: none;
+      }
+
+      .eld-map-popup .leaflet-popup-content {
+        margin: 0;
+      }
+
+      .eld-popup-link {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 10px 20px;
+        color: #213321;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 13.5px;
+        font-weight: normal;
+        font-style: normal;
+        letter-spacing: 0.4px;
+        text-decoration: none;
+        white-space: nowrap;
+        text-shadow: none;
+        transition: color 200ms ease, gap 200ms ease, opacity 200ms ease;
+      }
+
+      .eld-popup-link:hover {
+        color: #3a6b3a;
+        gap: 10px;
+        opacity: 0.85;
+        text-decoration: none;
+      }
+
+      @media (max-width: 600px) {
+        .eld-popup-link {
+          font-size: 12px;
+          padding: 8px 16px;
+          letter-spacing: 0.4px;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .location-section {
+          gap: 28px;
+          padding: 0 20px;
+          padding-top: 28px !important;
+          padding-bottom: 28px !important;
+        }
+
+        .location-copy {
+          max-width: none;
+        }
+
+        .location-copy p {
+          text-wrap: balance;
+          text-align: left;
+        }
+
+        .location-copy h2 {
+          text-align: left;
+        }
+
+        .location-actions {
+          justify-content: center;
+        }
+
+        .mobile-footer-links {
+          display: none;
+        }
+
+        .site-footer {
+          min-height: 52px;
+          margin-top: 14px !important;
+          padding-top: 4px !important;
+          padding-bottom: 4px !important;
+          padding-left: 8px !important;
+          padding-right: 8px !important;
+          justify-content: flex-start;
+          gap: 8px;
+        }
+
+        .footer-home-link {
+          position: static;
+          left: auto;
+          top: auto;
+          transform: none;
+          margin: 0;
+          flex-shrink: 0;
+        }
+
+        .footer-social-links {
+          display: flex;
+          position: static;
+          right: auto;
+          top: auto;
+          transform: none;
+          flex: 1;
+          min-width: 0;
+          gap: 4px;
+        }
+
+        .footer-title {
+          display: block;
+          width: auto;
+          max-width: none;
+          position: static;
+          left: auto;
+          transform: none;
+          margin: 0;
+          text-align: left;
+          white-space: normal;
+          overflow: visible;
+          text-overflow: clip;
+          line-height: 1.02;
+          font-size: clamp(0.74rem, 3.2vw, 0.9rem);
+          flex-shrink: 1;
+        }
+
+        .footer-title-break {
+          display: block;
+        }
+
+        .footer-icon-link {
+          flex: 1 1 0;
+          min-width: 0;
+          height: auto;
+        }
+
+        .footer-icon-link svg,
+        .footer-icon-link img {
+          height: clamp(20px, 8vw, 40px);
+          width: auto;
+          max-width: 100%;
+        }
+
+        .footer-icon-link--instagram {
+          width: auto;
+          height: auto;
+        }
+
+        .footer-icon-link--bluethumb img {
+          height: clamp(22px, 8.5vw, 40px);
+        }
+
+        /* Stack the image grid into a single column so AOS anchors
+           are at different Y positions and only the first pair fires
+           on the initial scroll. */
+        #interactive-grid .w3-third {
+          width: 100% !important;
+          float: none !important;
+        }
+
+      }
+
+      @media (max-width: 900px) {
+        .location-section {
+          flex-direction: column;
+          text-align: center;
+        }
+      }
+
+      /* Frog map scroll hint */
+      .frog-map-hint {
+        position: fixed;
+        bottom: 28px;
+        right: 28px;
+        width: 80px;
+        cursor: pointer;
+        z-index: 100;
+        opacity: 0;
+        transform: translateY(60px);
+        transition: opacity 1.9s ease-in, transform 1.9s ease-in, filter 0.2s ease;
+        pointer-events: none;
+        background: none;
+        border: none;
+        padding: 0;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .frog-map-hint.frog-map-hint--visible {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      /* Fast fade-out when hiding */
+      .frog-map-hint.frog-map-hint--hiding {
+        transition: opacity 0.3s ease, transform 0.3s ease, filter 0.2s ease;
+      }
+
+      .frog-map-hint:hover {
+        filter: brightness(1.1) drop-shadow(0 4px 12px rgba(0,0,0,0.22));
+        transform: translateY(-3px);
+      }
+
+      .frog-map-hint:active {
+        filter: brightness(0.93);
+        transform: translateY(0);
+      }
+
+      .frog-map-hint-face {
+        width: 80px;
+        height: 75px;
+        background-image: url('assets/Screenshot 2026-03-25 at 16-11-20 Map Screenshot Helper.png');
+        background-size: 115%;
+        background-position: 50% 70%;
+        -webkit-mask-image: url('assets/frog-outline.svg');
+        mask-image: url('assets/frog-outline.svg');
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+      }
+
     </style>
     <script type="application/ld+json">
 {
@@ -256,6 +712,21 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/85188/jquery.ripples-min.js"></script>
     <!-- <script src="src/index.js"></script> -->
+      <script>
+        // Mobile/WebView compatibility: some environments expose a partial
+        // Performance API without mark/measure clear helpers.
+        (function () {
+          var perf = window.performance = window.performance || {};
+          if (typeof perf.now !== "function") {
+            var start = Date.now();
+            perf.now = function () { return Date.now() - start; };
+          }
+          if (typeof perf.mark !== "function") perf.mark = function () {};
+          if (typeof perf.clearMarks !== "function") perf.clearMarks = function () {};
+          if (typeof perf.measure !== "function") perf.measure = function () {};
+          if (typeof perf.clearMeasures !== "function") perf.clearMeasures = function () {};
+        })();
+      </script>
    <script>
       var $el = $("#app");
       $el.ripples({
@@ -534,18 +1005,126 @@
     </div>
     </div>
 
+    <!-- Frog map scroll hint -->
+    <button id="frog-map-hint" class="frog-map-hint" aria-label="Scroll to map" title="See the map">
+      <div class="frog-map-hint-face" aria-hidden="true"></div>
+    </button>
+
+
+    <section class="location-section w3-padding-64" aria-labelledby="location-heading">
+      <div class="location-copy">
+        <h2 id="location-heading">Find Us</h2>
+        <p>
+Ecology Landscape Design is rooted in the distinctive ecology of the Upper 
+Midwest. Based in Saint Paul, we design for the soils, climate, hydrology, 
+and plant communities of the greater Twin Cities region. Use the map below 
+to get oriented, then open our Google listing to see our typical service area.
+        <div class="location-actions">
+          <a class="location-link" href="https://maps.app.goo.gl/VvzirR27F9kXDifX6" target="_blank" rel="noopener noreferrer">
+            Open full map
+          </a>
+        </div>
+      </div>
+      <div class="location-map-shell">
+        <div class="location-map-mask">
+          <div id="eld-map"></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="mobile-footer-links" aria-label="Social links">
+      <a
+        class="footer-icon-link footer-icon-link--instagram"
+        href="https://www.instagram.com/ecology.landscape.design/"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Ecology Landscape Design on Instagram"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="ig-gradient-mobile" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#fdf497" />
+              <stop offset="35%" stop-color="#fd5949" />
+              <stop offset="65%" stop-color="#d6249f" />
+              <stop offset="100%" stop-color="#285aeb" />
+            </linearGradient>
+          </defs>
+          <path fill="url(#ig-gradient-mobile)" d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zm10.75 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
+        </svg>
+      </a>
+      <a
+        class="footer-icon-link footer-icon-link--asset"
+        href="https://www.ecolandscaping.org/"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Ecological Landscape Alliance"
+      >
+        <img src="assets/ELASecondaryBlack684c586d8c9be.png" alt="Ecological Landscape Alliance logo" />
+      </a>
+      <a
+        class="footer-icon-link footer-icon-link--asset footer-icon-link--bluethumb"
+        href="https://bluethumb.org"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Bluethumb"
+      >
+        <img src="assets/bluethumb-logo-large.png" alt="Bluethumb logo" />
+      </a>
+    </div>
+
+
     <footer
-      class="w3-container w3-padding w3-light-grey w3-center w3-xlarge"
-      style="margin-top: 128px"
+      class="w3-container w3-padding w3-light-grey w3-center w3-xlarge site-footer"
+      style="margin-top: 48px"
     >
       <a
         href="/"
         style="border: 2px solid white; color: green"
-        class="w3-btn w3-circle w3-border-black w3-hover-border-green w3-hover-text-black w3-xlarge w3-left w3-ripple"
+        class="w3-btn w3-circle w3-border-black w3-hover-border-green w3-hover-text-black w3-xlarge w3-ripple footer-home-link"
         onclick="w3_open()"
+        aria-label="Back to top"
         >𓆏</a
       >
-      <span>Ecology Landscape Design</span>
+      <span class="footer-title">Ecology <br class="footer-title-break">Landscape <br class="footer-title-break">Design</span>
+      <span class="footer-social-links">
+        <a
+          class="footer-icon-link footer-icon-link--instagram"
+          href="https://www.instagram.com/ecology.landscape.design/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Ecology Landscape Design on Instagram"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <defs>
+              <linearGradient id="ig-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#fdf497" />
+                <stop offset="35%" stop-color="#fd5949" />
+                <stop offset="65%" stop-color="#d6249f" />
+                <stop offset="100%" stop-color="#285aeb" />
+              </linearGradient>
+            </defs>
+            <path fill="url(#ig-gradient)" d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zm10.75 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
+          </svg>
+        </a>
+        <a
+          class="footer-icon-link footer-icon-link--asset"
+          href="https://www.ecolandscaping.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Ecological Landscape Alliance"
+        >
+          <img src="assets/ELASecondaryBlack684c586d8c9be.png" alt="Ecological Landscape Alliance logo" />
+        </a>
+        <a
+          class="footer-icon-link footer-icon-link--asset footer-icon-link--bluethumb"
+          href="https://bluethumb.org"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Bluethumb"
+        >
+          <img src="assets/bluethumb-logo-large.png" alt="Bluethumb logo" />
+        </a>
+      </span>
     </footer>
 
     <script>
@@ -606,9 +1185,39 @@
 
         var startY = window.pageYOffset;
         var maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-        var gridCenter =
-          interactiveGrid.offsetTop + interactiveGrid.offsetHeight / 2;
-        var endY = clamp(gridCenter - window.innerHeight / 2, 0, maxScroll);
+        var endY;
+        if (window.matchMedia('(max-width: 600px)').matches) {
+          // Briefly strip data-aos from col2/col3 so AOS drops them from its
+          // observation list, then immediately restore them. This forces a
+          // clean AOS.refresh() cycle that leaves col2/col3 in their
+          // aos-init (hidden) state for the entire scroll — preventing
+          // the zoom-in-down negative-Y transform from pulling them into
+          // view on frog click when they are only 20px below the viewport.
+          Array.from(interactiveGrid.querySelectorAll('.w3-third:not(:first-child) [data-aos]')).forEach(function (el) {
+            el.setAttribute('data-aos-suppressed', el.getAttribute('data-aos') || '');
+            el.removeAttribute('data-aos');
+          });
+          if (typeof AOS !== 'undefined') { AOS.refresh(); }
+          Array.from(interactiveGrid.querySelectorAll('.w3-third:not(:first-child) [data-aos-suppressed]')).forEach(function (el) {
+            el.setAttribute('data-aos', el.getAttribute('data-aos-suppressed') || '');
+            el.removeAttribute('data-aos-suppressed');
+          });
+          if (typeof AOS !== 'undefined') { AOS.refresh(); }
+
+          // Columns are stacked (100% width). Scroll to place col1 in view.
+          var cols = interactiveGrid.querySelectorAll('.w3-third');
+          if (cols.length >= 2) {
+            var secondColAbsTop = getAbsoluteTop(cols[1]);
+            // Stop 20px before col2's top so it stays completely off-screen.
+            endY = clamp(secondColAbsTop - window.innerHeight - 20, 0, maxScroll);
+          } else {
+            endY = clamp(interactiveGrid.offsetTop, 0, maxScroll);
+          }
+        } else {
+          var gridCenter =
+            interactiveGrid.offsetTop + interactiveGrid.offsetHeight / 2;
+          endY = clamp(gridCenter - window.innerHeight / 2, 0, maxScroll);
+        }
         var duration = getSynchronizedDuration(startY, endY);
         var distance = endY - startY;
         var startTime = performance.now();
@@ -624,6 +1233,9 @@
             scrollAnimationFrame = requestAnimationFrame(step);
           } else {
             window.scrollTo(0, endY);
+            window.dispatchEvent(new CustomEvent("grid-scroll-animation-complete", {
+              detail: { duration: duration }
+            }));
           }
         }
 
@@ -631,8 +1243,208 @@
       }
 
       centerScrollLink.addEventListener("click", function () {
+        window.dispatchEvent(new CustomEvent("grid-scroll-animation-start"));
         scrollToCenteredGridGracefully();
       });
+
+      // Frog map hint
+      (function () {
+        var frogHint = document.getElementById("frog-map-hint");
+        var hintEnabled = false;
+        var isVisible = false;
+        var enableScheduled = false;
+        var transitionListenerAttached = false;
+        var transitionFallbackTimer = null;
+        var cycleArmed = true;
+        var gridImgs = interactiveGrid.querySelectorAll("img[data-aos]");
+        var lastGridImg = Array.from(gridImgs).reduce(function (last, img) {
+          return (!last || img.offsetTop > last.offsetTop) ? img : last;
+        }, null);
+        var observer = null;
+
+        function resetCycleState() {
+          hintEnabled = false;
+          enableScheduled = false;
+          transitionListenerAttached = false;
+          if (transitionFallbackTimer) {
+            clearTimeout(transitionFallbackTimer);
+            transitionFallbackTimer = null;
+          }
+          applyHide();
+        }
+
+        function scheduleEnable(delayMs) {
+          if (hintEnabled || enableScheduled) return;
+          enableScheduled = true;
+          setTimeout(enableHint, Math.max(delayMs || 0, 0));
+        }
+
+        function applyShow() {
+          // Remove hiding class, then let the slow 1.9s transition take over
+          frogHint.classList.remove("frog-map-hint--hiding");
+          frogHint.classList.add("frog-map-hint--visible");
+          isVisible = true;
+        }
+
+        function applyHide() {
+          // Fast 0.3s fade-out
+          frogHint.classList.add("frog-map-hint--hiding");
+          frogHint.classList.remove("frog-map-hint--visible");
+          isVisible = false;
+        }
+
+        function maybeToggleHint() {
+          if (!hintEnabled) return;
+          var hero = document.getElementById("app");
+          var mapShell = document.querySelector(".location-map-shell");
+          var footer = document.querySelector("footer");
+          var vh = window.innerHeight;
+
+          var heroBottom = hero ? hero.getBoundingClientRect().bottom : 0;
+          var heroDominates = heroBottom > vh * 0.5;
+
+          var mapTop = mapShell ? mapShell.getBoundingClientRect().top : Infinity;
+          var mapInView = mapTop < vh;
+
+          var footerTop = footer ? footer.getBoundingClientRect().top : Infinity;
+          var footerClose = footerTop < vh + 80;
+
+          var shouldShow = !heroDominates && !mapInView && !footerClose;
+
+          if (shouldShow && !isVisible) {
+            applyShow();
+          } else if (!shouldShow && isVisible) {
+            applyHide();
+          }
+        }
+
+        function enableHint() {
+          if (hintEnabled) return;
+          hintEnabled = true;
+          enableScheduled = false;
+          cycleArmed = false;
+          maybeToggleHint();
+          if (observer) {
+            observer.disconnect();
+            observer = null;
+          }
+        }
+
+        function maybeEnableAfterGridAnimation() {
+          if (!cycleArmed || hintEnabled || gridImgs.length === 0) {
+            return;
+          }
+
+          var isMobile = window.matchMedia('(max-width: 600px)').matches;
+          var checkImgs = isMobile
+            ? Array.from(interactiveGrid.querySelectorAll('.w3-third:first-child img[data-aos]'))
+            : Array.from(gridImgs);
+
+          var allAnimated = checkImgs.every(function (img) {
+            return img.classList.contains("aos-animate");
+          });
+
+          if (!allAnimated) return;
+
+          // On mobile use the last col1 image as the animation-end trigger.
+          var effectiveLastImg = isMobile
+            ? (function () {
+                var col1Imgs = interactiveGrid.querySelectorAll('.w3-third:first-child img[data-aos]');
+                return col1Imgs[col1Imgs.length - 1] || lastGridImg;
+              })()
+            : lastGridImg;
+
+          if (!effectiveLastImg) {
+            scheduleEnable(0);
+            return;
+          }
+
+          if (transitionListenerAttached) return;
+          transitionListenerAttached = true;
+
+          var finished = false;
+          function finalizeEnable() {
+            if (finished) return;
+            finished = true;
+            if (transitionFallbackTimer) clearTimeout(transitionFallbackTimer);
+            effectiveLastImg.removeEventListener("transitionend", onTransitionEnd);
+            effectiveLastImg.removeEventListener("animationend", onAnimationEnd);
+            scheduleEnable(0);
+          }
+
+          function onTransitionEnd(e) {
+            if (e.propertyName === "opacity" || e.propertyName === "transform") {
+              finalizeEnable();
+            }
+          }
+
+          function onAnimationEnd() {
+            finalizeEnable();
+          }
+
+          effectiveLastImg.addEventListener("transitionend", onTransitionEnd);
+          effectiveLastImg.addEventListener("animationend", onAnimationEnd);
+          // Mobile browsers may skip transitionend during heavy scrolling.
+          transitionFallbackTimer = setTimeout(finalizeEnable, aosDurationMs + 150);
+        }
+
+        function attachGridObserver() {
+          if (observer) observer.disconnect();
+          observer = new MutationObserver(function () {
+            maybeEnableAfterGridAnimation();
+          });
+          gridImgs.forEach(function (img) {
+            observer.observe(img, { attributes: true, attributeFilter: ["class"] });
+          });
+        }
+
+        function armCycle() {
+          cycleArmed = true;
+          resetCycleState();
+          attachGridObserver();
+          maybeEnableAfterGridAnimation();
+        }
+
+        window.addEventListener("grid-scroll-animation-complete", function (e) {
+          // No artificial delay: enable path is tied to last grid image animation end.
+          maybeEnableAfterGridAnimation();
+        });
+
+        window.addEventListener("grid-scroll-animation-start", function () {
+          armCycle();
+        });
+
+        window.addEventListener("scroll", maybeToggleHint, { passive: true });
+
+        frogHint.addEventListener("click", function () {
+          if (scrollAnimationFrame) cancelAnimationFrame(scrollAnimationFrame);
+          var startY = window.pageYOffset;
+          // Overshoot by 300px so the browser's scroll clamping absorbs any
+          // iOS address-bar resize or AOS-induced height growth mid-scroll.
+          // window.scrollTo is clamped to the real max, so the eased curve
+          // naturally decelerates into the bottom with no gap-close step.
+          var endY = document.documentElement.scrollHeight - window.innerHeight + 300;
+          var distance = endY - startY;
+          if (distance <= 0) return;
+          var triggerScrollY = endY - window.innerHeight / 2;
+          var triggerDistanceProgress = clamp((triggerScrollY - startY) / distance, 0, 0.98);
+          var triggerTimeProgress = inverseEaseInOutSine(triggerDistanceProgress);
+          var duration = clamp(aosDurationMs / (1 - triggerTimeProgress), aosDurationMs, 7000);
+          var startTime = performance.now();
+          function stepBottom(now) {
+            var elapsed = now - startTime;
+            var progress = Math.min(elapsed / duration, 1);
+            window.scrollTo(0, startY + distance * easeInOutSine(progress));
+            if (progress < 1) {
+              scrollAnimationFrame = requestAnimationFrame(stepBottom);
+            }
+          }
+          scrollAnimationFrame = requestAnimationFrame(stepBottom);
+        });
+
+        // Initial arm for first visit and manual scroll usage.
+        armCycle();
+      })();
     </script>
 
   <script>
@@ -730,6 +1542,211 @@
             }
     </script>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
+    <script>
+      (function () {
+        var TWIN_CITIES = [44.972780238620096, -93.13722684429911];
+        var coarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+        var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var isFirefox = /firefox/i.test(navigator.userAgent || '');
+        var useCrispMapTransition = prefersReducedMotion || (coarsePointer && isFirefox);
+
+        // Scale both initial and fly-to zoom proportionally to the rendered mask size
+        // so the same geographic coverage is visible on all screen sizes.
+        var DESKTOP_MASK_PX = 560;
+        var _mapShellEl = document.querySelector('.location-map-shell');
+        var _maskPx = (_mapShellEl && _mapShellEl.offsetWidth > 0) ? _mapShellEl.offsetWidth : DESKTOP_MASK_PX;
+        var _zoomOffset = Math.log2(_maskPx / DESKTOP_MASK_PX);
+
+        var map = L.map('eld-map', {
+          center: [40.0, -82.0],
+          zoom: 2.3 + _zoomOffset,
+          zoomSnap: 0,
+          keepBuffer: 6,
+          zoomControl: false,
+          attributionControl: false,
+          scrollWheelZoom: false,
+          doubleClickZoom: false,
+          zoomAnimation: !useCrispMapTransition,
+          fadeAnimation: !useCrispMapTransition,
+          markerZoomAnimation: !useCrispMapTransition
+        });
+
+        // Trackpad pinch = ctrl+wheel events. Amplify their delta to match Google Maps
+        // feel, then enable. The wheel capture listener is registered later (after label
+        // helpers are defined) so it can also trigger early label fade on zoom-out.
+        (function () {
+          var FACTOR = 30;
+          var swz = map.scrollWheelZoom;
+          var origOnWheelScroll = swz._onWheelScroll;
+
+          swz.options.wheelDebounceTime = 20;
+
+          swz._onWheelScroll = function (e) {
+            if (e.ctrlKey) {
+              this._delta += L.DomEvent.getWheelDelta(e) * (FACTOR - 1);
+            }
+            origOnWheelScroll.call(this, e);
+          };
+
+          swz.enable();
+        })();
+
+        L.tileLayer(
+          'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+          { maxZoom: 19, updateWhenZooming: true, keepBuffer: 8 }
+        ).addTo(map);
+
+        // Label overlay — dark_only_labels: white text with dark halo, standard
+        // satellite map style. Hidden until flyTo completes, then fades in.
+        var labelLayer = L.tileLayer(
+          'https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png',
+          { maxZoom: 19, opacity: 0, pane: 'overlayPane' }
+        ).addTo(map);
+
+        function showLabels() {
+          var c = labelLayer.getContainer();
+          if (!c) { return; }
+          c.style.transition = 'none';
+          c.style.opacity = '0';
+          // Allow the browser to register opacity:0 before starting the transition
+          requestAnimationFrame(function () {
+            c.style.transition = 'opacity 1.4s ease';
+            labelLayer.setOpacity(0.85);
+          });
+        }
+
+        function hideLabels() {
+          var c = labelLayer.getContainer();
+          if (c) { c.style.transition = 'opacity 0.25s ease'; }
+          labelLayer.setOpacity(0);
+        }
+
+        // Fly-to zoom: proportional to mask size so the same geographic area
+        // is visible relative to the frog mask on any viewport.
+        // On mobile (mask smaller than desktop 560px), pull back one extra step.
+        var FLY_ZOOM = 9.8 + _zoomOffset - (_maskPx < DESKTOP_MASK_PX ? 1 : 0);
+        var labelsVisible = false;
+        var atRestState = false;
+
+        // Capture-phase wheel listener — registered here so hideLabels is in scope.
+        // Fires BEFORE Leaflet's tile scale transform for zoom-out gestures,
+        // giving the fade a head-start before labels visually resize.
+        // Also blocks two-finger page scroll from zooming the map.
+        map.getContainer().addEventListener('wheel', function (e) {
+          if (!e.ctrlKey) {
+            e.stopPropagation();
+          } else if (e.deltaY > 0 && labelsVisible) {
+            hideLabels();
+            labelsVisible = false;
+          }
+        }, { capture: true, passive: true });
+
+        // Hide on continuous zoom event so fade covers any zoom-out path
+        // (keyboard shortcuts, API calls, etc.) in addition to wheel.
+        map.on('zoom', function () {
+          if (map.getZoom() < FLY_ZOOM && labelsVisible) {
+            hideLabels(); labelsVisible = false;
+          }
+        });
+
+        map.on('zoomend', function () {
+          if (map.getZoom() >= FLY_ZOOM && !labelsVisible) {
+            showLabels(); labelsVisible = true;
+          }
+        });
+
+        // Any user interaction breaks the "at rest" state so the next pin click animates.
+        // Any user interaction breaks the "at rest" state so the next pin click animates.
+        map.on('dragstart', function () {
+          atRestState = false;
+          var popup = marker.getPopup();
+          var popupEl = popup && popup.getElement ? popup.getElement() : null;
+          if (popupEl && popup.isOpen()) {
+            popupEl.style.transition = 'opacity 1.1s ease';
+            popupEl.style.opacity = '0';
+            setTimeout(function () { marker.closePopup(); }, 1150);
+          }
+        });
+        map.on('zoomstart', function () { atRestState = false; });
+        map.on('popupopen', function () {
+          var popup = marker.getPopup();
+          var popupEl = popup && popup.getElement ? popup.getElement() : null;
+          if (popupEl) { popupEl.style.transition = ''; popupEl.style.opacity = ''; }
+        });
+
+        var pinIcon = L.divIcon({
+          className: '',
+          html: '<svg class="eld-pin-marker" xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 28 38"><defs><filter id="ps" x="-40%" y="-20%" width="180%" height="160%"><feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="rgba(0,0,0,0.5)"/></filter></defs><path filter="url(#ps)" d="M12 0C5.37 0 0 5.37 0 12c0 9 12 22 12 22s12-13 12-22C24 5.37 18.63 0 12 0z" fill="#4a8c4a" stroke="white" stroke-width="1.5"/><circle cx="12" cy="12" r="4" fill="white"/></svg>',
+          iconSize: [28, 36],
+          iconAnchor: [14, 36],
+          popupAnchor: [0, -38]
+        });
+
+        var marker = L.marker(TWIN_CITIES, {
+          icon: pinIcon,
+          title: 'Twin Cities, MN'
+        }).addTo(map);
+
+        var isMobileView = window.matchMedia('(max-width: 600px)').matches;
+
+        marker.bindPopup(
+          '<a class="eld-popup-link" href="https://maps.app.goo.gl/VvzirR27F9kXDifX6" target="_blank" rel="noopener noreferrer">View on Google Maps <span aria-hidden="true">↗</span></a>',
+          { className: 'eld-map-popup', closeButton: false, offset: [0, -8], autoPan: false }
+        );
+
+        function onFlyEnd() {
+          showLabels();
+          labelsVisible = true;
+          atRestState = true;
+          marker.openPopup();
+        }
+
+        marker.on('click', function () {
+          // Already at the landed state with no interaction — just show popup, no animation.
+          if (atRestState) {
+            marker.openPopup();
+            return;
+          }
+          map.off('moveend', onFlyEnd);
+          marker.closePopup();
+          if (labelsVisible) { hideLabels(); labelsVisible = false; }
+
+          // Pre-warm tiles at the target zoom to reduce blurry flash on arrival.
+          var warmLayer = L.tileLayer(
+            'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+            { minZoom: 9, maxZoom: 10, opacity: 0, pane: 'tilePane' }
+          );
+          warmLayer.addTo(map);
+          warmLayer.setZIndex(-1);
+          map.once('moveend', function () { map.removeLayer(warmLayer); });
+
+          // On mobile, fly further north so the pin lands lower in the frog body,
+          // keeping the popup visible and unclipped by the mask edge.
+          // The larger offset compensates for the broader zoom level on mobile.
+          var flyCenter = isMobileView
+            ? [TWIN_CITIES[0] + 0.14, TWIN_CITIES[1]]
+            : TWIN_CITIES;
+
+          // Firefox mobile can raster-scale tiles and markers mid-fly, causing a blurry
+          // "green blotch" before the end state. Use a pan-first path there to stay crisp.
+          if (useCrispMapTransition) {
+            map.panTo(flyCenter, { animate: true, duration: 1.1, easeLinearity: 0.35 });
+            map.once('moveend', function () {
+              map.setView(flyCenter, FLY_ZOOM, { animate: false });
+              requestAnimationFrame(onFlyEnd);
+            });
+            return;
+          }
+
+          map.flyTo(flyCenter, FLY_ZOOM, { animate: true, duration: 2.5 });
+          map.once('moveend', onFlyEnd);
+        });
+
+        setTimeout(function () { map.invalidateSize(); }, 100);
+      })();
+    </script>
+
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <script>
@@ -737,6 +1754,27 @@
         duration: 1900,
         easing: "ease-in-sine",
       });
+
+      // On mobile the columns are stacked. AOS.init() runs before images have
+      // loaded, so column heights are near-zero and all three anchors appear at
+      // virtually the same Y position — causing all pairs to fire together.
+      // After window load, images are sized and the layout is correct.
+      // The strip/restore/refresh forces AOS to re-measure with accurate heights
+      // so col2/col3 fire only when their anchors actually enter the viewport.
+      window.addEventListener('load', function () {
+        if (!window.matchMedia('(max-width: 600px)').matches) return;
+        Array.from(interactiveGrid.querySelectorAll('.w3-third:not(:first-child) [data-aos]')).forEach(function (el) {
+          el.setAttribute('data-aos-suppressed', el.getAttribute('data-aos') || '');
+          el.removeAttribute('data-aos');
+        });
+        AOS.refresh();
+        Array.from(interactiveGrid.querySelectorAll('.w3-third:not(:first-child) [data-aos-suppressed]')).forEach(function (el) {
+          el.setAttribute('data-aos', el.getAttribute('data-aos-suppressed') || '');
+          el.removeAttribute('data-aos-suppressed');
+        });
+        AOS.refresh();
+      });
     </script>
+
   </body>
 </html>
