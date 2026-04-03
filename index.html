@@ -468,9 +468,9 @@
 
       @media (max-width: 600px) {
         .location-section {
-          gap: 28px;
+          gap: 12px;
           padding: 0 20px;
-          padding-top: 28px !important;
+          padding-top: 16px !important;
           padding-bottom: 28px !important;
         }
 
@@ -568,6 +568,11 @@
           height: clamp(22px, 8.5vw, 40px);
         }
 
+        /* Reduce the gap between the grid bottom and Find Us section. */
+        #interactive-grid {
+          padding-bottom: 20px !important;
+        }
+
         /* Stack the image grid into a single column so AOS anchors
            are at different Y positions and only the first pair fires
            on the initial scroll. */
@@ -638,6 +643,18 @@
         mask-position: center;
         -webkit-mask-size: contain;
         mask-size: contain;
+      }
+
+      @media (max-width: 600px) {
+        .frog-map-hint {
+          width: 62px;
+          bottom: 22px;
+          right: 22px;
+        }
+        .frog-map-hint-face {
+          width: 62px;
+          height: 59px;
+        }
       }
 
     </style>
@@ -1294,14 +1311,20 @@ to get oriented, then open our Google listing to see our typical service area.
           if (!hintEnabled) return;
           var hero = document.getElementById("app");
           var mapShell = document.querySelector(".location-map-shell");
+          var locationSection = document.querySelector(".location-section");
           var footer = document.querySelector("footer");
           var vh = window.innerHeight;
+          var isMobile = window.matchMedia('(max-width: 600px)').matches;
 
           var heroBottom = hero ? hero.getBoundingClientRect().bottom : 0;
           var heroDominates = heroBottom > vh * 0.5;
 
-          var mapTop = mapShell ? mapShell.getBoundingClientRect().top : Infinity;
-          var mapInView = mapTop < vh;
+          // On mobile, hide the hint as soon as any part of the Find Us section
+          // enters the viewport so it never overlaps the text or map.
+          // On desktop, keep the existing behaviour: hide only when the map itself is in view.
+          var hideTarget = (isMobile && locationSection) ? locationSection : mapShell;
+          var hideTargetTop = hideTarget ? hideTarget.getBoundingClientRect().top : Infinity;
+          var mapInView = hideTargetTop < vh;
 
           var footerTop = footer ? footer.getBoundingClientRect().top : Infinity;
           var footerClose = footerTop < vh + 80;
@@ -1544,6 +1567,73 @@ to get oriented, then open our Google listing to see our typical service area.
         var FLY_ZOOM = 9.8 + _zoomOffset - (_maskPx < DESKTOP_MASK_PX ? 1 : 0);
         var labelsVisible = false;
         var atRestState = false;
+
+        // Drag guard: prevent drags that start outside the visible frog mask.
+        // CSS mask-image clips visually but not pointer events — the full bounding
+        // rectangle still receives events. We draw the frog SVG to a hidden canvas
+        // and hit-test the alpha channel on each down event; if the point is
+        // transparent (outside the frog body) we stopPropagation so Leaflet's
+        // capture + bubble drag listeners on #eld-map never fire.
+        //
+        // Leaflet 1.9 registers on 'pointerdown' when supported (all modern
+        // browsers, including mobile), falling back to 'touchstart'. Both are
+        // intercepted here in capture phase so they resolve before Leaflet's
+        // bubble-phase listeners on the child element.
+        //
+        // Canvas dimensions are hardcoded from the SVG viewBox (686.85 × 639.96)
+        // because SVGs without explicit width/height attributes return naturalWidth=0,
+        // producing a 0×0 canvas that would block all interaction.
+        // A center-pixel sanity check guards against iOS Safari rendering the SVG
+        // as a blank canvas, which would also block all interaction.
+        (function () {
+          var maskEl = document.querySelector('.location-map-mask');
+          if (!maskEl) return;
+
+          var HIT_W = 687, HIT_H = 640;
+          var hitCanvas = document.createElement('canvas');
+          hitCanvas.width  = HIT_W;
+          hitCanvas.height = HIT_H;
+          var hitCtx = hitCanvas.getContext('2d', { willReadFrequently: true });
+          var hitReady = false;
+
+          var frogImg = new Image();
+          frogImg.onload = function () {
+            hitCtx.drawImage(frogImg, 0, 0, HIT_W, HIT_H);
+            // Sanity check: the geometric center of the frog should be opaque.
+            // If the entire canvas is blank (iOS Safari SVG render failure), fail open.
+            var centerAlpha = hitCtx.getImageData(Math.floor(HIT_W / 2), Math.floor(HIT_H / 2), 1, 1).data[3];
+            hitReady = centerAlpha > 0;
+          };
+          frogImg.onerror = function () { hitReady = false; }; // fail open on load error
+          frogImg.src = 'assets/frog-outline.svg';
+
+          function isOutsideFrog(clientX, clientY) {
+            if (!hitReady) return false;
+            var rect = maskEl.getBoundingClientRect();
+            var px = Math.round((clientX - rect.left) / rect.width  * (HIT_W - 1));
+            var py = Math.round((clientY - rect.top)  / rect.height * (HIT_H - 1));
+            if (px < 0 || py < 0 || px >= HIT_W || py >= HIT_H) return true;
+            return hitCtx.getImageData(px, py, 1, 1).data[3] < 128;
+          }
+
+          // pointerdown covers mouse and touch on all modern browsers.
+          // mousedown is also intercepted because browsers fire both independently
+          // on desktop — stopPropagation on pointerdown does not suppress mousedown,
+          // and Leaflet listens for both to start drag.
+          maskEl.addEventListener('pointerdown', function (e) {
+            if (isOutsideFrog(e.clientX, e.clientY)) e.stopPropagation();
+          }, { capture: true, passive: true });
+
+          maskEl.addEventListener('mousedown', function (e) {
+            if (isOutsideFrog(e.clientX, e.clientY)) e.stopPropagation();
+          }, { capture: true, passive: true });
+
+          // touchstart fallback for browsers without pointer event support.
+          maskEl.addEventListener('touchstart', function (e) {
+            var t = e.changedTouches[0];
+            if (t && isOutsideFrog(t.clientX, t.clientY)) e.stopPropagation();
+          }, { capture: true, passive: true });
+        })();
 
         // Capture-phase wheel listener — registered here so hideLabels is in scope.
         // Fires BEFORE Leaflet's tile scale transform for zoom-out gestures,
