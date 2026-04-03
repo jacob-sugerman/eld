@@ -81,14 +81,14 @@
       }
 
       a:link {
-        color: none;
+        color: inherit;
         background-color: transparent;
         text-decoration: none;
         margin: 0;
         text-shadow: 3px 5px 9px black;
       }
       a:visited {
-        color: none;
+        color: inherit;
         background-color: transparent;
         text-decoration: underline;
       }
@@ -743,7 +743,7 @@
           if (typeof perf.clearMeasures !== "function") perf.clearMeasures = function () {};
         })();
       </script>
-   <script>
+    <script>
       var $el = $("#app");
       $el.ripples({
         resolution: 512,
@@ -758,7 +758,7 @@
         var strength = 0.01 + Math.random() * 0.02;
         $el.ripples("drop", x, y, dropRadius, strength);
       }
-      for (let index = 0; index < 3; index++) {
+      for (var i = 0; i < 3; i++) {
         randomDrop();
       }
       setInterval(randomDrop, 4500);
@@ -1033,6 +1033,7 @@ Ecology Landscape Design is rooted in the distinctive ecology of the Upper
 Midwest. Based in Saint Paul, we design for the soils, climate, hydrology, 
 and plant communities of the greater Twin Cities region. Use the map below 
 to get oriented, then open our Google listing to see our typical service area.
+        </p>
         <div class="location-actions">
           <a class="location-link" href="https://maps.app.goo.gl/VvzirR27F9kXDifX6" target="_blank" rel="noopener noreferrer">
             Open full map
@@ -1618,34 +1619,42 @@ to get oriented, then open our Google listing to see our typical service area.
           // scroll for touches that don't have preventDefault() called on them.
           map.getContainer().style.touchAction = 'pan-y';
 
-          // Track touch IDs that started inside the frog body so we can
-          // prevent scroll on their subsequent touchmove events.
+          // Track inside-frog touches by identifier, storing their start position.
+          // We do NOT call preventDefault() on touchstart — that would suppress
+          // the browser's synthetic click event, breaking the pin tap → flyTo animation.
+          // Instead, defer preventDefault() to the first touchmove with real movement,
+          // which suppresses scroll for drags while leaving taps unaffected.
           var insideTouches = {};
 
-          // Non-passive so we can call preventDefault() for inside-frog touches.
           maskEl.addEventListener('touchstart', function (e) {
-            var hasInside = false;
             for (var i = 0; i < e.changedTouches.length; i++) {
               var t = e.changedTouches[i];
               if (isOutsideFrog(t.clientX, t.clientY)) {
-                // Corner: block Leaflet drag; don't preventDefault so browser scrolls.
+                // Corner touch: block Leaflet drag, let browser handle scroll.
                 e.stopPropagation();
               } else {
-                insideTouches[t.identifier] = true;
-                hasInside = true;
+                insideTouches[t.identifier] = { startX: t.clientX, startY: t.clientY, dragging: false };
               }
             }
-            // Suppress browser pan for inside-frog touches so Leaflet drag works.
-            if (hasInside) e.preventDefault();
-          }, { capture: true, passive: false });
+          }, { capture: true, passive: true });
 
           maskEl.addEventListener('touchmove', function (e) {
+            var shouldPrevent = false;
             for (var i = 0; i < e.changedTouches.length; i++) {
-              if (insideTouches[e.changedTouches[i].identifier]) {
-                e.preventDefault();
-                return;
+              var t = e.changedTouches[i];
+              var tracked = insideTouches[t.identifier];
+              if (tracked) {
+                if (!tracked.dragging) {
+                  var dx = t.clientX - tracked.startX;
+                  var dy = t.clientY - tracked.startY;
+                  if (dx * dx + dy * dy > 9) { // 3px threshold
+                    tracked.dragging = true;
+                  }
+                }
+                if (tracked.dragging) shouldPrevent = true;
               }
             }
+            if (shouldPrevent) e.preventDefault();
           }, { capture: true, passive: false });
 
           maskEl.addEventListener('touchend', function (e) {
