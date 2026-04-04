@@ -1435,7 +1435,7 @@ to get oriented, then open our Google listing to see our typical service area.
 
         window.addEventListener("scroll", maybeToggleHint, { passive: true });
 
-        frogHint.addEventListener("click", function () {
+        function doScrollToBottom() {
           if (scrollAnimationFrame) cancelAnimationFrame(scrollAnimationFrame);
           var startY = window.pageYOffset;
           // Overshoot by 300px so the browser's scroll clamping absorbs any
@@ -1459,7 +1459,28 @@ to get oriented, then open our Google listing to see our typical service area.
             }
           }
           scrollAnimationFrame = requestAnimationFrame(stepBottom);
-        });
+        }
+
+        // click covers mouse and keyboard activation on desktop.
+        frogHint.addEventListener("click", doScrollToBottom);
+
+        // iOS suppresses synthetic click when the element is mid CSS-transform
+        // (the 1.9s slide-in). touchend fires reliably regardless; preventDefault
+        // cancels the subsequent synthetic click so we don't fire twice.
+        var _tapStartX, _tapStartY;
+        frogHint.addEventListener('touchstart', function (e) {
+          _tapStartX = e.changedTouches[0].clientX;
+          _tapStartY = e.changedTouches[0].clientY;
+        }, { passive: true });
+        frogHint.addEventListener('touchend', function (e) {
+          var t = e.changedTouches[0];
+          var dx = t.clientX - _tapStartX;
+          var dy = t.clientY - _tapStartY;
+          if (dx * dx + dy * dy < 100) { // <10 px — tap, not swipe
+            e.preventDefault();
+            doScrollToBottom();
+          }
+        }, { passive: false });
 
         // Initial arm for first visit and manual scroll usage.
         armCycle();
