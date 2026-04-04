@@ -619,9 +619,11 @@
         transition: opacity 0.3s ease, transform 0.3s ease, filter 0.2s ease;
       }
 
-      .frog-map-hint:hover {
-        filter: brightness(1.1) drop-shadow(0 4px 12px rgba(0,0,0,0.22));
-        transform: translateY(-3px);
+      @media (hover: hover) {
+        .frog-map-hint:hover {
+          filter: brightness(1.1) drop-shadow(0 4px 12px rgba(0,0,0,0.22));
+          transform: translateY(-3px);
+        }
       }
 
       .frog-map-hint:active {
@@ -1667,15 +1669,7 @@ to get oriented, then open our Google listing to see our typical service area.
             insideTouches = {};
           }, { capture: true });
 
-          // Desktop: pointerdown + mousedown stop propagation for outside-frog
-          // clicks so Leaflet never starts a drag there.
-          maskEl.addEventListener('pointerdown', function (e) {
-            if (isOutsideFrog(e.clientX, e.clientY)) e.stopPropagation();
-          }, { capture: true, passive: true });
 
-          maskEl.addEventListener('mousedown', function (e) {
-            if (isOutsideFrog(e.clientX, e.clientY)) e.stopPropagation();
-          }, { capture: true, passive: true });
         })();
 
         // Capture-phase wheel listener — registered here so hideLabels is in scope.
