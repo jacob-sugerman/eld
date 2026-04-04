@@ -600,11 +600,12 @@
         z-index: 100;
         opacity: 0;
         transform: translateY(60px);
-        transition: opacity 1.9s ease-in, transform 1.9s ease-in, filter 0.2s ease;
+        transition: opacity 1.9s ease-in, transform 1.9s ease-out, filter 0.2s ease;
         pointer-events: none;
         background: none;
         border: none;
         padding: 0;
+        touch-action: manipulation;
         -webkit-tap-highlight-color: transparent;
       }
 
