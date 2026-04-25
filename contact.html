@@ -426,6 +426,11 @@ img {
       .service-list li:nth-child(8) .service-option:hover .service-symbol { background: #b8dcd4; border-color: #3a8870; }
     }
 
+    /* Consultation symbol — line-height:1 lets flexbox center reliably across all devices/fonts */
+    .service-list li:nth-child(1) .service-symbol {
+      line-height: 1;
+    }
+
     /* Design symbol — smaller glyph so it sits with clear space inside the fixed 44×44 box */
     .service-list li:nth-child(2) .service-symbol {
       font-size: 20px;
@@ -577,7 +582,7 @@ img {
           <label class="service-option">
             <input type="checkbox" name="services[]" value="Dry Stonework">
             <span class="checkbox-indicator" aria-hidden="true"></span>
-            <span class="service-symbol" aria-hidden="true">⚒</span>
+            <span class="service-symbol" aria-hidden="true">⚒&#xFE0E;</span>
             <span class="service-label">Dry Stonework</span>
           </label>
         </li>
@@ -726,5 +731,3 @@ img {
 
 </body>
 </html>
-
-
