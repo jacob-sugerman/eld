@@ -20,6 +20,12 @@
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="alternate icon" type="image/png" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+    <!-- Preconnect to tile servers so DNS + TLS is resolved before first tile request -->
+    <link rel="preconnect" href="https://server.arcgisonline.com">
+    <link rel="preconnect" href="https://a.basemaps.cartocdn.com">
+    <link rel="dns-prefetch" href="https://b.basemaps.cartocdn.com">
+    <link rel="dns-prefetch" href="https://c.basemaps.cartocdn.com">
+    <link rel="dns-prefetch" href="https://d.basemaps.cartocdn.com">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
@@ -1847,6 +1853,45 @@ to get oriented, then open our Google listing to see our typical service area.
             waitForTiles(onFlyEnd);
           });
         });
+
+        // Prefetch destination tiles when the map section scrolls into view —
+        // fires well before the user can click the pin, giving even more lead
+        // time on slow connections. Uses the same tile-coordinate math as the
+        // on-click prefetch. Runs at most once; observer disconnects afterward.
+        (function () {
+          var prefetchDone = false;
+          function prefetchDestTilesEarly() {
+            if (prefetchDone) return;
+            prefetchDone = true;
+            var base = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/';
+            function latLonToTile(lat, lon, z) {
+              var n = Math.pow(2, z);
+              var x = Math.floor((lon + 180) / 360 * n);
+              var latR = lat * Math.PI / 180;
+              var y = Math.floor((1 - Math.log(Math.tan(latR) + 1 / Math.cos(latR)) / Math.PI) / 2 * n);
+              return [x, y];
+            }
+            var lat = TWIN_CITIES[0], lon = TWIN_CITIES[1];
+            [Math.floor(FLY_ZOOM), Math.ceil(FLY_ZOOM)].forEach(function (z) {
+              var c = latLonToTile(lat, lon, z);
+              for (var dy = -2; dy <= 2; dy++) {
+                for (var dx = -2; dx <= 2; dx++) {
+                  new Image().src = base + z + '/' + (c[1] + dy) + '/' + (c[0] + dx);
+                }
+              }
+            });
+          }
+          var mapShellEl = document.querySelector('.location-map-shell');
+          if (mapShellEl && 'IntersectionObserver' in window) {
+            var io = new IntersectionObserver(function (entries) {
+              if (entries[0].isIntersecting) {
+                prefetchDestTilesEarly();
+                io.disconnect();
+              }
+            }, { rootMargin: '400px' });
+            io.observe(mapShellEl);
+          }
+        })();
 
         setTimeout(function () { map.invalidateSize(); }, 100);
       })();
