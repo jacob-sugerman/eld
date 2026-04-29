@@ -1029,13 +1029,13 @@
 
     <section class="location-section w3-padding-64" aria-labelledby="location-heading">
       <div class="location-copy">
-        <h2 id="location-heading">Find us</h2>
+        <h2 id="location-heading">Find Us</h2>
         <p>
 Ecology Landscape Design is rooted in the distinctive ecology of the Upper 
 Midwest. Based in Saint Paul, we design for the soils, climate, hydrology, 
-and plant communities of the greater Twin Cities region. Use the map 
-to get oriented; follow the links to see our typical service area, IG, and partners.
-        </p>
+and plant communities of the greater Twin Cities region. Use the map to get oriented, 
+then follow the links to see our typical service area, IG, and partners.
+
         <div class="location-actions">
           <a class="location-link" href="https://maps.app.goo.gl/VvzirR27F9kXDifX6" target="_blank" rel="noopener noreferrer">
             Open full map
@@ -1555,7 +1555,7 @@ to get oriented; follow the links to see our typical service area, IG, and partn
           swz.enable();
         })();
 
-        L.tileLayer(
+        var mainTileLayer = L.tileLayer(
           'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
           { maxZoom: 19, updateWhenZooming: true, keepBuffer: 8 }
         ).addTo(map);
@@ -1782,7 +1782,24 @@ to get oriented; follow the links to see our typical service area, IG, and partn
           );
           warmLayer.addTo(map);
           warmLayer.setZIndex(-1);
-          map.once('moveend', function () { map.removeLayer(warmLayer); });
+          // warmLayer cleanup is handled in the consolidated moveend handler below.
+
+          // Wait for destination tiles to finish loading before revealing labels/popup.
+          // On production networks tiles may not be ready at moveend, causing a blurry
+          // flash until the correct zoom-level tiles arrive. 'load' on the tile layer
+          // fires once all viewport tiles are done; a 2 s timeout guards against slow
+          // or offline connections.
+          function waitForTiles(cb) {
+            var done = false;
+            function finish() {
+              if (done) return;
+              done = true;
+              mainTileLayer.off('load', finish);
+              cb();
+            }
+            mainTileLayer.on('load', finish);
+            setTimeout(finish, 2000);
+          }
 
           // On mobile, fly further north so the pin lands lower in the frog body,
           // keeping the popup visible and unclipped by the mask edge.
@@ -1796,14 +1813,18 @@ to get oriented; follow the links to see our typical service area, IG, and partn
           if (useCrispMapTransition) {
             map.panTo(flyCenter, { animate: true, duration: 1.1, easeLinearity: 0.35 });
             map.once('moveend', function () {
+              map.removeLayer(warmLayer);
               map.setView(flyCenter, FLY_ZOOM, { animate: false });
-              requestAnimationFrame(onFlyEnd);
+              requestAnimationFrame(function () { waitForTiles(onFlyEnd); });
             });
             return;
           }
 
           map.flyTo(flyCenter, FLY_ZOOM, { animate: true, duration: 2.5 });
-          map.once('moveend', onFlyEnd);
+          map.once('moveend', function () {
+            map.removeLayer(warmLayer);
+            waitForTiles(onFlyEnd);
+          });
         });
 
         setTimeout(function () { map.invalidateSize(); }, 100);
