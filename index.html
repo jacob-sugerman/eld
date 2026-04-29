@@ -1775,24 +1775,40 @@ to get oriented, then open our Google listing to see our typical service area.
           marker.closePopup();
           if (labelsVisible) { hideLabels(); labelsVisible = false; }
 
-          // Pre-warm tiles at the target zoom to reduce blurry flash on arrival.
-          var warmLayer = L.tileLayer(
-            'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-            { minZoom: 9, maxZoom: 10, opacity: 0, pane: 'tilePane' }
-          );
-          warmLayer.addTo(map);
-          warmLayer.setZIndex(-1);
-          // warmLayer cleanup is handled in the consolidated moveend handler below.
+          // Pre-fetch destination tiles into the browser HTTP cache immediately.
+          // A Leaflet tileLayer added at the current zoom (~2) never requests z=9/10
+          // tiles — it only loads what's visible. Instead, fire Image requests for
+          // the exact tile URLs Leaflet will later need. By the time the 2.5s flyTo
+          // completes, these tiles will be in the browser cache and load instantly.
+          (function prefetchDestTiles() {
+            var base = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/';
+            function latLonToTile(lat, lon, z) {
+              var n = Math.pow(2, z);
+              var x = Math.floor((lon + 180) / 360 * n);
+              var latR = lat * Math.PI / 180;
+              var y = Math.floor((1 - Math.log(Math.tan(latR) + 1 / Math.cos(latR)) / Math.PI) / 2 * n);
+              return [x, y];
+            }
+            var lat = TWIN_CITIES[0], lon = TWIN_CITIES[1];
+            // Fetch a 5x5 block at both floor and ceil of FLY_ZOOM — Leaflet renders
+            // tiles at floor(zoom) scaled up, so those are the critical ones.
+            [Math.floor(FLY_ZOOM), Math.ceil(FLY_ZOOM)].forEach(function (z) {
+              var c = latLonToTile(lat, lon, z);
+              for (var dy = -2; dy <= 2; dy++) {
+                for (var dx = -2; dx <= 2; dx++) {
+                  new Image().src = base + z + '/' + (c[1] + dy) + '/' + (c[0] + dx);
+                }
+              }
+            });
+          })();
 
-          // Wait for destination tiles to finish loading before revealing labels/popup.
-          // On production networks tiles may not be ready at moveend, causing a blurry
-          // flash until the correct zoom-level tiles arrive. 'load' on the tile layer
-          // fires once all viewport tiles are done; a 2 s timeout guards against slow
-          // or offline connections.
+          // After moveend, hold off on showing labels/popup until the tile layer
+          // signals all viewport tiles are loaded. Guards against the blurry-scaled
+          // tile flash on production cold-cache loads.
+          // Fast path: if _tilesToLoad is already 0, tiles finished during the
+          // animation (cache hit) — proceed immediately without waiting for an
+          // event that already fired.
           function waitForTiles(cb) {
-            // _tilesToLoad is Leaflet's internal counter: 0 means all tiles in the
-            // current viewport are already loaded (cache hit during animation).
-            // Exit immediately in that case — don't wait for an event that already fired.
             if ((mainTileLayer._tilesToLoad || 0) === 0) {
               requestAnimationFrame(cb);
               return;
@@ -1820,7 +1836,6 @@ to get oriented, then open our Google listing to see our typical service area.
           if (useCrispMapTransition) {
             map.panTo(flyCenter, { animate: true, duration: 1.1, easeLinearity: 0.35 });
             map.once('moveend', function () {
-              map.removeLayer(warmLayer);
               map.setView(flyCenter, FLY_ZOOM, { animate: false });
               requestAnimationFrame(function () { waitForTiles(onFlyEnd); });
             });
@@ -1829,7 +1844,6 @@ to get oriented, then open our Google listing to see our typical service area.
 
           map.flyTo(flyCenter, FLY_ZOOM, { animate: true, duration: 2.5 });
           map.once('moveend', function () {
-            map.removeLayer(warmLayer);
             waitForTiles(onFlyEnd);
           });
         });
