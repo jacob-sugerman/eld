@@ -408,6 +408,14 @@
         image-rendering: auto;
       }
 
+      /* Prevent subpixel gaps between tiles on high-DPI / mobile screens.
+         A transparent outline forces each tile onto its own compositing layer,
+         which closes hairline seams that appear when tiles land on fractional
+         pixel coordinates during GPU rasterisation. */
+      #eld-map .leaflet-tile {
+        outline: 1px solid transparent;
+      }
+
       .eld-pin-marker {
         width: 28px;
         height: 36px;
@@ -1039,8 +1047,8 @@
         <p>
 Ecology Landscape Design is rooted in the distinctive ecology of the Upper 
 Midwest. Based in Saint Paul, we design for the soils, climate, hydrology, 
-and plant communities of the greater Twin Cities region. Use the map 
-to get oriented, then open our Google listing to see our typical service area, IG, and partners.
+and plant communities of the greater Twin Cities region. Use the map below 
+to get oriented, then open our Google listing to see our typical service area.
         </p>
         <div class="location-actions">
           <a class="location-link" href="https://maps.app.goo.gl/VvzirR27F9kXDifX6" target="_blank" rel="noopener noreferrer">
