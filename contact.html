@@ -419,16 +419,11 @@ img {
       .service-list li:nth-child(1) .service-option:hover .service-symbol { background: #f0e8c0; border-color: #c8b050; }
       .service-list li:nth-child(2) .service-option:hover .service-symbol { background: #f0dce8; border-color: #b07898; }
       .service-list li:nth-child(3) .service-option:hover .service-symbol { background: #d0f0c0; border-color: #78c058; }
-      .service-list li:nth-child(4) .service-option:hover .service-symbol { background: #e4e0da; border-color: #9e9488; -webkit-text-stroke: 0.75px #9e9488; }
-      .service-list li:nth-child(5) .service-option:hover .service-symbol { background: #d4e8f4; border-color: #7aa8d0; -webkit-text-stroke: 0.75px #7aa8d0; }
+      .service-list li:nth-child(4) .service-option:hover .service-symbol { background: #e4e0da; border-color: #9e9488; -webkit-text-stroke: 0.75px #444; }
+      .service-list li:nth-child(5) .service-option:hover .service-symbol { background: #d4e8f4; border-color: #7aa8d0; -webkit-text-stroke: 0.75px #444; }
       .service-list li:nth-child(6) .service-option:hover .service-symbol { background: #ecf0c0; border-color: #b8c040; }
       .service-list li:nth-child(7) .service-option:hover .service-symbol { background: #f4ddd0; border-color: #c47a5a; }
       .service-list li:nth-child(8) .service-option:hover .service-symbol { background: #b8dcd4; border-color: #3a8870; }
-    }
-
-    /* Consultation symbol — line-height:1 lets flexbox center reliably across all devices/fonts */
-    .service-list li:nth-child(1) .service-symbol {
-      line-height: 1;
     }
 
     /* Design symbol — smaller glyph so it sits with clear space inside the fixed 44×44 box */
@@ -582,7 +577,7 @@ img {
           <label class="service-option">
             <input type="checkbox" name="services[]" value="Dry Stonework">
             <span class="checkbox-indicator" aria-hidden="true"></span>
-            <span class="service-symbol" aria-hidden="true">⚒&#xFE0E;</span>
+            <span class="service-symbol" aria-hidden="true">⚒</span>
             <span class="service-label">Dry Stonework</span>
           </label>
         </li>
