@@ -1571,7 +1571,7 @@ to get oriented; follow the links to see our typical service area, IG, and partn
 
         var mainTileLayer = L.tileLayer(
           'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-          { maxZoom: 19, updateWhenZooming: true, keepBuffer: 8 }
+          { maxZoom: 19, updateWhenZooming: false, keepBuffer: 8 }
         ).addTo(map);
 
         // Label overlay — dark_only_labels: white text with dark halo, standard
