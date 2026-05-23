@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Ecology Landscape Design | Ecological Landscaping &amp; Native Plant Gardens in the Twin Cities</title>
     <meta name="description" content="Ecology Landscape Design creates ecological landscapes, native plant gardens, pollinator habitats, rain gardens, and stormwater solutions for homeowners in the Twin Cities, Minnesota.">
     <link rel="canonical" href="https://ecologylandscapedesign.com/">
@@ -17,9 +18,9 @@
     <meta name="twitter:image" content="https://ecologylandscapedesign.com/assets/rock_stones_0169_01_s.jpg">
     <meta name="robots" content="index, follow, max-image-preview:large">
     <!-- Favicon -->
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="alternate icon" type="image/png" href="assets/favicon.png">
-<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="alternate icon" type="image/png" href="assets/favicon.png">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <!-- Preconnect to tile servers so DNS + TLS is resolved before first tile request -->
     <link rel="preconnect" href="https://server.arcgisonline.com">
     <link rel="preconnect" href="https://a.basemaps.cartocdn.com">
@@ -29,8 +30,6 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
       #app {
         font-family: Arial, Helvetica, sans-serif;
@@ -164,8 +163,7 @@
       }
 
       .zoom:hover {
-        -ms-transform: scale(1.035); /* IE 9 */
-        -webkit-transform: scale(1.035); /* Safari 3-8 */
+        -webkit-transform: scale(1.035);
         transform: scale(1.035);
       }
 
@@ -208,6 +206,11 @@
         left: 16px;
         top: 50%;
         transform: translateY(-50%);
+      }
+
+      a.footer-home-link:link,
+      a.footer-home-link:visited {
+        text-shadow: none;
       }
 
       .footer-title {
@@ -324,27 +327,21 @@
         min-height: 44px;
         padding: 0 22px;
         border-radius: 999px;
-        border: 2px solid black;
-        background: white;
-        color: green;
+        border: 1px solid rgba(33, 51, 33, 0.2);
+        background: rgba(255, 255, 255, 0.72);
+        color: #213321;
         text-decoration: none;
         text-shadow: none;
         box-shadow: none;
-        transition: border-color 180ms ease, color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+        transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
       }
 
       a.location-link:hover {
-        color: black;
-        background: white;
-        border-color: green;
+        color: #213321;
+        background: #e4ede4;
         text-decoration: none;
         transform: translateY(-2px);
         box-shadow: 0 14px 28px rgba(33, 51, 33, 0.16);
-      }
-
-      button.location-link {
-        font: inherit;
-        cursor: pointer;
       }
 
       .location-actions {
@@ -481,9 +478,7 @@
           padding: 8px 16px;
           letter-spacing: 0.4px;
         }
-      }
 
-      @media (max-width: 600px) {
         .location-section {
           gap: 12px;
           padding: 0 20px;
@@ -746,7 +741,6 @@
     <div id="app"></div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/85188/jquery.ripples-min.js"></script>
-    <!-- <script src="src/index.js"></script> -->
       <script>
         // Mobile/WebView compatibility: some environments expose a partial
         // Performance API without mark/measure clear helpers.
@@ -1115,7 +1109,6 @@ to get oriented; follow the links to see our typical service area, IG, and partn
         href="/"
         style="border: 2px solid white; color: green"
         class="w3-btn w3-circle w3-border-black w3-hover-border-green w3-hover-text-black w3-xlarge w3-ripple footer-home-link"
-        onclick="w3_open()"
         aria-label="Back to top"
         >𓆏</a
       >
