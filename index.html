@@ -1519,9 +1519,8 @@ to get oriented; follow the links to see our typical service area, IG, and partn
         var TWIN_CITIES = [44.972780238620096, -93.13722684429911];
         var coarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
         var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        // All touch/mobile devices use the crisp (no CSS-scale) path to avoid
-        // blurry tile scaling during zoom animations on mobile hardware.
-        var useCrispMapTransition = prefersReducedMotion || coarsePointer;
+        var isFirefox = /firefox/i.test(navigator.userAgent || '');
+        var useCrispMapTransition = prefersReducedMotion || (coarsePointer && isFirefox);
 
         // Scale both initial and fly-to zoom proportionally to the rendered mask size
         // so the same geographic coverage is visible on all screen sizes.
@@ -1847,42 +1846,13 @@ to get oriented; follow the links to see our typical service area, IG, and partn
             ? [TWIN_CITIES[0] + 0.14, TWIN_CITIES[1]]
             : TWIN_CITIES;
 
-          // Mobile / reduced-motion: avoid Leaflet's CSS scale-transform zoom, which
-          // pixel-scales tiles mid-animation and looks blurry on mobile hardware.
-          // Instead, pan first (translation-only, always crisp), then jump the zoom
-          // level. A tile crossfade bridges the jump so the transition reads as
-          // smooth on every device without any blurry scaling frames.
+          // Firefox mobile can raster-scale tiles and markers mid-fly, causing a blurry
+          // "green blotch" before the end state. Use a pan-first path there to stay crisp.
           if (useCrispMapTransition) {
             map.panTo(flyCenter, { animate: true, duration: 1.1, easeLinearity: 0.35 });
             map.once('moveend', function () {
-              // Reduced-motion: skip the fade animation and jump immediately.
-              if (prefersReducedMotion) {
-                map.setView(flyCenter, FLY_ZOOM, { animate: false });
-                waitForTiles(onFlyEnd);
-                return;
-              }
-              // Mobile: fade tiles out, jump zoom level (invisible), then fade back in.
-              // Because tiles were prefetched on click, they are already in the
-              // browser cache and render sharply the moment the fade-in begins.
-              var tilePaneEl = map.getContainer().querySelector('.leaflet-tile-pane');
-              if (tilePaneEl) {
-                tilePaneEl.style.transition = 'opacity 0.22s ease';
-                tilePaneEl.style.opacity = '0';
-              }
-              setTimeout(function () {
-                map.setView(flyCenter, FLY_ZOOM, { animate: false });
-                waitForTiles(function () {
-                  if (tilePaneEl) {
-                    tilePaneEl.style.transition = 'opacity 0.55s ease';
-                    tilePaneEl.style.opacity = '1';
-                    setTimeout(function () {
-                      tilePaneEl.style.transition = '';
-                      tilePaneEl.style.opacity = '';
-                    }, 550);
-                  }
-                  onFlyEnd();
-                });
-              }, 220);
+              map.setView(flyCenter, FLY_ZOOM, { animate: false });
+              waitForTiles(onFlyEnd);
             });
             return;
           }
