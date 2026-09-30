@@ -1513,9 +1513,12 @@ to get oriented; follow the links to see our typical service area, IG, and partn
   </script>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
+    <script src="assets/arcgis-key.js"></script>
     <script>
       (function () {
         var TWIN_CITIES = [44.972780238620096, -93.13722684429911];
+        var ARCGIS_TILE_URL = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/';
+        var ARCGIS_TILE_TOKEN = window.ELD_ARCGIS_API_KEY ? '?token=' + encodeURIComponent(window.ELD_ARCGIS_API_KEY) : '';
         var coarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
         var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         var isFirefox = /firefox/i.test(navigator.userAgent || '');
@@ -1563,7 +1566,7 @@ to get oriented; follow the links to see our typical service area, IG, and partn
         })();
 
         var mainTileLayer = L.tileLayer(
-          'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+          ARCGIS_TILE_URL + '{z}/{y}/{x}' + ARCGIS_TILE_TOKEN,
           { maxZoom: 19, updateWhenZooming: false, keepBuffer: 8 }
         ).addTo(map);
 
@@ -1788,7 +1791,6 @@ to get oriented; follow the links to see our typical service area, IG, and partn
           // the exact tile URLs Leaflet will later need. By the time the 2.5s flyTo
           // completes, these tiles will be in the browser cache and load instantly.
           (function prefetchDestTiles() {
-            var base = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/';
             function latLonToTile(lat, lon, z) {
               var n = Math.pow(2, z);
               var x = Math.floor((lon + 180) / 360 * n);
@@ -1803,7 +1805,7 @@ to get oriented; follow the links to see our typical service area, IG, and partn
               var c = latLonToTile(lat, lon, z);
               for (var dy = -2; dy <= 2; dy++) {
                 for (var dx = -2; dx <= 2; dx++) {
-                  new Image().src = base + z + '/' + (c[1] + dy) + '/' + (c[0] + dx);
+                  new Image().src = ARCGIS_TILE_URL + z + '/' + (c[1] + dy) + '/' + (c[0] + dx) + ARCGIS_TILE_TOKEN;
                 }
               }
             });
@@ -1871,7 +1873,6 @@ to get oriented; follow the links to see our typical service area, IG, and partn
           function prefetchDestTilesEarly() {
             if (prefetchDone) return;
             prefetchDone = true;
-            var base = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/';
             function latLonToTile(lat, lon, z) {
               var n = Math.pow(2, z);
               var x = Math.floor((lon + 180) / 360 * n);
@@ -1884,7 +1885,7 @@ to get oriented; follow the links to see our typical service area, IG, and partn
               var c = latLonToTile(lat, lon, z);
               for (var dy = -2; dy <= 2; dy++) {
                 for (var dx = -2; dx <= 2; dx++) {
-                  new Image().src = base + z + '/' + (c[1] + dy) + '/' + (c[0] + dx);
+                  new Image().src = ARCGIS_TILE_URL + z + '/' + (c[1] + dy) + '/' + (c[0] + dx) + ARCGIS_TILE_TOKEN;
                 }
               }
             });
