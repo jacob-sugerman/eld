@@ -1,1 +1,0 @@
-window.ELD_ARCGIS_API_KEY = '';

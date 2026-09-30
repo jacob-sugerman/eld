@@ -33,11 +33,6 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      - name: Configure ArcGIS API key
-        env:
-          ARCGIS_API_KEY: ${{ secrets.ARCGIS_API_KEY }}
-        run: |
-          node -e 'const fs = require("fs"); const key = process.env.ARCGIS_API_KEY; if (!key) { console.error("Missing required GitHub Actions secret: ARCGIS_API_KEY"); process.exit(1); } fs.writeFileSync("assets/arcgis-key.js", "window.ELD_ARCGIS_API_KEY = " + JSON.stringify(key) + ";\n");'
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
