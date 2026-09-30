@@ -1,1 +1,896 @@
-PLACEHOLDER
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ecology Landscape Design | Ecological Landscaping &amp; Native Plant Gardens in the Twin Cities</title>
+    <meta name="description" content="Ecology Landscape Design creates ecological landscapes, native plant gardens, pollinator habitats, rain gardens, and stormwater solutions for homeowners in the Twin Cities, Minnesota." />
+    <link rel="canonical" href="https://ecologylandscapedesign.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Ecology Landscape Design | Ecological Landscaping &amp; Native Plant Gardens in the Twin Cities">
+    <meta property="og:description" content="Ecology Landscape Design creates ecological landscapes, native plant gardens, pollinator habitats, rain gardens, and stormwater solutions for homeowners in the Twin Cities.">
+    <meta property="og:url" content="https://ecologylandscapedesign.com/">
+    <meta property="og:image" content="https://ecologylandscapedesign.com/assets/rock_stones_0169_01_s.jpg">
+    <meta property="og:site_name" content="Ecology Landscape Design">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ecology Landscape Design | Ecological Landscaping &amp; Native Plant Gardens in the Twin Cities">
+    <meta name="twitter:description" content="Ecology Landscape Design creates ecological landscapes, native plant gardens, pollinator habitats, rain gardens, and stormwater solutions for homeowners in the Twin Cities.">
+    <meta name="twitter:image" content="https://ecologylandscapedesign.com/assets/rock_stones_0169_01_s.jpg">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <!-- Preconnect to tile servers so DNS + TLS is resolved before first tile request -->
+    <link rel="preconnect" href="https://server.arcgisonline.com">
+    <link rel="preconnect" href="https://a.basemaps.cartocdn.com">
+    <link rel="dns-prefetch" href="https://b.basemaps.cartocdn.com">
+    <link rel="dns-prefetch" href="https://c.basemaps.cartocdn.com">
+    <link rel="dns-prefetch" href="https://d.basemaps.cartocdn.com">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
+    <style>
+      #app {
+        font-family: Arial, Helvetica, sans-serif;
+        background-image: url("assets/rock_stones_0169_01_s.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        width: 100vw;
+        height: 100vh;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        pointer-events: none;
+      }
+
+      .hero-overlay .container {
+        height: 100%;
+      }
+
+      .hero-overlay a,
+      .hero-overlay .hero-link,
+      .hero-overlay h2 {
+        pointer-events: auto;
+      }
+
+      .hero-link {
+        background: transparent;
+        border: 0;
+        padding: 0;
+        margin: 0;
+        color: inherit;
+        cursor: pointer;
+        font: inherit;
+        text-align: inherit;
+        text-shadow: 3px 5px 9px black;
+      }
+
+      .hero-link:hover {
+        color: orange;
+        text-decoration: underline;
+      }
+
+      .hero-link:active {
+        color: green;
+        text-decoration: underline;
+      }
+
+      a:link {
+        color: inherit;
+        background-color: transparent;
+        text-decoration: none;
+        margin: 0;
+        text-shadow: 3px 5px 9px black;
+      }
+      a:visited {
+        color: inherit;
+        background-color: transparent;
+        text-decoration: underline;
+      }
+      a:hover {
+        color: orange;
+        background-color: transparent;
+        text-decoration: underline;
+      }
+      a:active {
+        color: green;
+        background-color: transparent;
+        text-decoration: underline;
+      }
+
+      .container {
+        position: relative;
+        text-align: center;
+      }
+
+      .bottom-left {
+        color: white;
+        position: absolute;
+        bottom: 15px;
+        left: 19px;
+      }
+
+      .top-left {
+        color: white;
+        position: absolute;
+        top: 15px;
+        left: 19px;
+      }
+
+      .top-right {
+        color: white;
+        position: absolute;
+        top: 15px;
+        right: 19px;
+      }
+
+      .bottom-right {
+        color: white;
+        position: absolute;
+        bottom: 15px;
+        right: 19px;
+      }
+
+      .centered {
+        color: white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .centered h2 {
+        text-align: left;
+      }
+
+      .w3-third img {
+        cursor: pointer;
+        padding: 1px;
+      }
+      .zoom {
+        transition: transform 0.2s;
+        margin: 0 auto;
+      }
+
+      .zoom:hover {
+        -webkit-transform: scale(1.035);
+        transform: scale(1.035);
+      }
+
+      @media (max-width: 600px) {
+        .top-left,
+        .bottom-left {
+          left: 8px;
+        }
+
+        .top-right,
+        .bottom-right {
+          right: 8px;
+        }
+      }
+
+      .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      .site-footer {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 58px;
+        padding-top: 6px !important;
+        padding-bottom: 6px !important;
+      }
+
+      .footer-home-link {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      a.footer-home-link:link,
+      a.footer-home-link:visited {
+        text-shadow: none;
+      }
+
+      .footer-title {
+        text-align: center;
+      }
+
+      .footer-title-break {
+        display: none;
+      }
+
+      .footer-social-links {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: inline-flex;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .footer-icon-link {
+        height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        color: #111;
+        background: transparent;
+        text-shadow: none;
+      }
+
+      .footer-icon-link:hover {
+        color: #111;
+        border-color: transparent;
+        text-decoration: none;
+        filter: brightness(1.05);
+      }
+
+      .footer-icon-link svg,
+      .footer-icon-link img {
+        width: auto;
+        height: 32px;
+        display: block;
+      }
+
+      .footer-icon-link svg {
+        fill: currentColor;
+      }
+
+      .footer-icon-link--instagram {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+      }
+
+      .footer-icon-link--instagram:hover {
+        color: #111;
+        border-color: transparent;
+      }
+
+      .footer-icon-link--bluethumb {
+        padding: 0;
+      }
+
+      .footer-icon-link--bluethumb img {
+        height: 38px;
+      }
+
+      .mobile-footer-links {
+        display: none;
+      }
+
+      .location-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 48px;
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      .location-copy {
+        max-width: 420px;
+        color: #213321;
+        text-shadow: none;
+      }
+
+      .location-copy h2,
+      .location-copy p {
+        text-shadow: none;
+      }
+
+      .location-copy h2 {
+        margin: 0 0 14px;
+        font-size: clamp(2rem, 2.8vw, 2.8rem);
+        line-height: 1;
+      }
+
+      .location-copy p {
+        margin: 0 0 18px;
+        font-size: 1rem;
+        line-height: 1.7;
+      }
+
+      a.location-link,
+      a.location-link:link,
+      a.location-link:visited {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 0 22px;
+        border-radius: 999px;
+        border: 1px solid rgba(33, 51, 33, 0.2);
+        background: rgba(255, 255, 255, 0.72);
+        color: #213321;
+        text-decoration: none;
+        text-shadow: none;
+        box-shadow: none;
+        transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+      }
+
+      a.location-link:hover {
+        color: #213321;
+        background: #e4ede4;
+        text-decoration: none;
+        transform: translateY(-2px);
+        box-shadow: 0 14px 28px rgba(33, 51, 33, 0.16);
+      }
+
+      .location-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .location-map-shell {
+        position: relative;
+        --frog-fill-mask: url("assets/frog-outline.svg");
+        flex: 0 0 min(560px, 92vw);
+        width: min(560px, 92vw);
+        aspect-ratio: 686.85 / 639.96;
+        display: grid;
+        place-items: center;
+        isolation: isolate;
+      }
+
+      .location-map-shell::before {
+        content: none;
+      }
+
+      .location-map-shell::after {
+        content: none;
+      }
+
+      .location-map-mask {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        -webkit-mask-image: var(--frog-fill-mask);
+        mask-image: var(--frog-fill-mask);
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-mode: alpha;
+        mask-mode: alpha;
+        background: transparent;
+      }
+
+      #eld-map {
+        position: absolute;
+        inset: 0;
+      }
+
+      #eld-map .leaflet-control-container {
+        display: none;
+      }
+
+      #eld-map .leaflet-tile-pane,
+      #eld-map .leaflet-shadow-pane,
+      #eld-map .leaflet-marker-pane,
+      #eld-map .leaflet-overlay-pane {
+        will-change: transform;
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+        image-rendering: auto;
+      }
+
+      /* Prevent subpixel gaps between tiles on high-DPI / mobile screens.
+         A transparent outline forces each tile onto its own compositing layer,
+         which closes hairline seams that appear when tiles land on fractional
+         pixel coordinates during GPU rasterisation. */
+      #eld-map .leaflet-tile {
+        outline: 1px solid transparent;
+      }
+
+      .eld-pin-marker {
+        width: 28px;
+        height: 36px;
+        cursor: pointer;
+        overflow: visible;
+        /* drop-shadow via filter causes per-frame repaints during animation —
+           use a subtle SVG shadow on the path instead (see inline SVG) */
+      }
+
+      .eld-map-popup .leaflet-popup-content-wrapper {
+        background: rgba(244, 241, 233, 0.97);
+        border: none;
+        border-radius: 999px;
+        box-shadow: 0 4px 24px rgba(33, 51, 33, 0.18), 0 1px 4px rgba(33, 51, 33, 0.10);
+        padding: 0;
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+      }
+
+      .eld-map-popup .leaflet-popup-tip-container {
+        display: block;
+      }
+
+      .eld-map-popup .leaflet-popup-tip {
+        background: rgba(244, 241, 233, 0.97);
+        box-shadow: none;
+      }
+
+      .eld-map-popup .leaflet-popup-content {
+        margin: 0;
+      }
+
+      .eld-popup-link {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 10px 20px;
+        color: #213321;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 13.5px;
+        font-weight: normal;
+        font-style: normal;
+        letter-spacing: 0.4px;
+        text-decoration: none;
+        white-space: nowrap;
+        text-shadow: none;
+        transition: color 200ms ease, gap 200ms ease, opacity 200ms ease;
+      }
+
+      .eld-popup-link:hover {
+        color: #3a6b3a;
+        gap: 10px;
+        opacity: 0.85;
+        text-decoration: none;
+      }
+
+      @media (max-width: 600px) {
+        .eld-popup-link {
+          font-size: 12px;
+          padding: 8px 16px;
+          letter-spacing: 0.4px;
+        }
+
+        .location-section {
+          gap: 12px;
+          padding: 0 20px;
+          padding-top: 16px !important;
+          padding-bottom: 28px !important;
+        }
+
+        .location-copy {
+          max-width: none;
+        }
+
+        .location-copy p {
+          text-align: left;
+        }
+
+        .location-copy h2 {
+          text-align: left;
+        }
+
+        .location-actions {
+          justify-content: center;
+        }
+
+        .mobile-footer-links {
+          display: none;
+        }
+
+        .site-footer {
+          min-height: 52px;
+          margin-top: 14px !important;
+          padding-top: 4px !important;
+          padding-bottom: 4px !important;
+          padding-left: 8px !important;
+          padding-right: 8px !important;
+          justify-content: flex-start;
+          gap: 8px;
+        }
+
+        .footer-home-link {
+          position: static;
+          left: auto;
+          top: auto;
+          transform: none;
+          margin: 0;
+          flex-shrink: 0;
+        }
+
+        .footer-social-links {
+          display: flex;
+          position: static;
+          right: auto;
+          top: auto;
+          transform: none;
+          flex: 1;
+          min-width: 0;
+          gap: 0;
+          justify-content: space-evenly;
+        }
+
+        .footer-title {
+          display: block;
+          width: auto;
+          max-width: none;
+          position: static;
+          left: auto;
+          transform: none;
+          margin: 0;
+          text-align: left;
+          white-space: normal;
+          overflow: visible;
+          text-overflow: clip;
+          line-height: 1.02;
+          font-size: clamp(0.74rem, 3.2vw, 0.9rem);
+          flex-shrink: 1;
+        }
+
+        .footer-title-break {
+          display: block;
+        }
+
+        .footer-icon-link {
+          flex: 0 0 auto;
+          height: auto;
+        }
+
+        .footer-icon-link svg,
+        .footer-icon-link img {
+          height: clamp(20px, 8vw, 40px);
+          width: auto;
+          max-width: 100%;
+        }
+
+        .footer-icon-link--instagram {
+          width: auto;
+          height: auto;
+        }
+
+        .footer-icon-link--bluethumb img {
+          height: clamp(22px, 8.5vw, 40px);
+        }
+
+        /* Reduce the gap between the grid bottom and Find Us section. */
+        #interactive-grid {
+          padding-bottom: 20px !important;
+        }
+
+        /* Stack the image grid into a single column so AOS anchors
+           are at different Y positions and only the first pair fires
+           on the initial scroll. */
+        #interactive-grid .w3-third {
+          width: 100% !important;
+          float: none !important;
+        }
+
+      }
+
+      @media (max-width: 900px) {
+        .location-section {
+          flex-direction: column;
+          text-align: center;
+        }
+      }
+
+      /* Frog map scroll hint */
+      .frog-map-hint {
+        position: fixed;
+        bottom: 28px;
+        right: 28px;
+        width: 80px;
+        cursor: pointer;
+        z-index: 100;
+        opacity: 0;
+        transform: translateY(60px);
+        transition: opacity 1.9s ease-in, transform 1.9s ease-out, filter 0.2s ease;
+        pointer-events: none;
+        background: none;
+        border: none;
+        padding: 0;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .frog-map-hint.frog-map-hint--visible {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      /* Fast fade-out when hiding */
+      .frog-map-hint.frog-map-hint--hiding {
+        transition: opacity 0.3s ease, transform 0.3s ease, filter 0.2s ease;
+      }
+
+      @media (hover: hover) {
+        .frog-map-hint:hover {
+          filter: brightness(1.1) drop-shadow(0 4px 12px rgba(0,0,0,0.22));
+          transform: translateY(-3px);
+        }
+      }
+
+      .frog-map-hint:active {
+        filter: brightness(0.93);
+      }
+
+      .frog-map-hint-face {
+        width: 80px;
+        height: 75px;
+        background-image: url('assets/Screenshot 2026-03-25 at 16-11-20 Map Screenshot Helper.png');
+        background-size: 115%;
+        background-position: 50% 70%;
+        -webkit-mask-image: url('assets/frog-outline.svg');
+        mask-image: url('assets/frog-outline.svg');
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+      }
+
+      @media (max-width: 600px) {
+        .frog-map-hint {
+          width: 62px;
+          bottom: 22px;
+          right: 22px;
+        }
+        .frog-map-hint-face {
+          width: 62px;
+          height: 59px;
+        }
+      }
+
+    </style>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": "https://ecologylandscapedesign.com/#business",
+  "name": "Ecology Landscape Design",
+  "description": "Ecological landscape design, native plant gardens, pollinator habitat installation, rain gardens, stormwater management, and ecological consultation for homeowners in the Twin Cities, Minnesota.",
+  "url": "https://ecologylandscapedesign.com",
+  "telephone": "+1-612-702-8542",
+  "email": "info@ecologylandscapedesign.com",
+  "image": "https://ecologylandscapedesign.com/assets/rock_stones_0169_01_s.jpg",
+  "priceRange": "$$",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Saint Paul",
+    "addressRegion": "MN",
+    "addressCountry": "US"
+  },
+  "areaServed": [
+    {"@type": "City", "name": "Saint Paul, Minnesota"},
+    {"@type": "City", "name": "Minneapolis, Minnesota"},
+    {"@type": "Place", "name": "Twin Cities, Minnesota"}
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Ecological Landscaping Services",
+    "itemListElement": [
+      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Ecological Landscape Design"}},
+      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Ecological Consultation"}},
+      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Native Plant Installation"}},
+      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Rain Garden Design"}},
+      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Stormwater Management"}}
+    ]
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+  }
+}
+</script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Ecology Landscape Design",
+  "url": "https://ecologylandscapedesign.com/",
+  "inLanguage": "en-US",
+  "publisher": {
+    "@type": "LocalBusiness",
+    "@id": "https://ecologylandscapedesign.com/#business",
+    "name": "Ecology Landscape Design",
+    "url": "https://ecologylandscapedesign.com/",
+    "telephone": "+1-612-702-8542",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Saint Paul",
+      "addressRegion": "MN",
+      "addressCountry": "US"
+    }
+  }
+}
+</script>
+</head>
+
+  <body>
+    <h1 class="visually-hidden">Ecology Landscape Design — Ecological Landscaping in the Twin Cities, Minnesota</h1>
+    <div id="app"></div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="./jquery.ripples-min.js"></script>
+      <script>
+        // Mobile/WebView compatibility: some environments expose a partial
+        // Performance API without mark/measure clear helpers.
+        (function () {
+          var perf = window.performance = window.performance || {};
+          if (typeof perf.now !== "function") {
+            var start = Date.now();
+            perf.now = function () { return Date.now() - start; };
+          }
+          if (typeof perf.mark !== "function") perf.mark = function () {};
+          if (typeof perf.clearMarks !== "function") perf.clearMarks = function () {};
+          if (typeof perf.measure !== "function") perf.measure = function () {};
+          if (typeof perf.clearMeasures !== "function") perf.clearMeasures = function () {};
+        })();
+      </script>
+    <script>
+      var $el = $("#app");
+      $el.ripples({
+        resolution: 512,
+        dropRadius: 10,
+        perturbance: 0.01,
+      });
+      $el.ripples("show");
+      function randomDrop() {
+        var x = Math.random() * $el.outerWidth();
+        var y = Math.random() * $el.outerHeight();
+        var dropRadius = 10;
+        var strength = 0.01 + Math.random() * 0.02;
+        $el.ripples("drop", x, y, dropRadius, strength);
+      }
+      for (var i = 0; i < 3; i++) {
+        randomDrop();
+      }
+      setInterval(randomDrop, 4500);
+    </script>
+
+    <div class="w3-container hero-overlay">
+      <div class="container">
+        <div class="bottom-left w3-text-white w3-xlarge">
+          <a href="contact.html">
+            <h2>Contact</h2>
+          </a>
+        </div>
+        <div class="top-left w3-text-white">
+          <a href="portfolio.html">
+            <h2>Portfolio</h2>
+          </a>
+        </div>
+        <div class="top-right w3-text-white">
+          <a href="design.html">
+            <h2>Services</h2>
+          </a>
+        </div>
+        <div class="bottom-right w3-text-white">
+          <a href="bio.html">
+            <h2>About</h2>
+          </a>
+        </div>
+        <div class="centered w3-text-white">
+          <button type="button" class="hero-link" id="center-scroll-link">
+            <h2>Ecology<br />Landscape<br />Design</h2>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="interactive-grid" class="w3-auto w3-padding-64 w3-container">
+      <!-- Content here -->
+    </div>
+
+    <div class="location-section w3-padding-64">
+      <div class="location-copy">
+        <h2>Find Us</h2>
+        <p>Located in the Twin Cities, we serve homeowners throughout the Minneapolis-Saint Paul area and surrounding regions.</p>
+        <div class="location-actions">
+          <a href="contact.html" class="location-link">Get in Touch</a>
+        </div>
+      </div>
+      <div class="location-map-shell">
+        <div class="location-map-mask">
+          <div id="eld-map"></div>
+        </div>
+      </div>
+      <button id="frog-map-hint" class="frog-map-hint" type="button" aria-label="Map showing service area">
+        <div class="frog-map-hint-face"></div>
+      </button>
+    </div>
+
+    <footer class="site-footer w3-white">
+      <a href="/" class="footer-home-link" title="Home">
+        <span style="font-size: 32px;">𓆏</span>
+      </a>
+      <div class="footer-title">
+        Ecology Landscape Design<br class="footer-title-break" /> — Ecological Landscaping in the Twin Cities
+      </div>
+      <div class="footer-social-links">
+        <a href="https://www.instagram.com/ecologylandscapedesign/" class="footer-icon-link footer-icon-link--instagram" title="Instagram">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1 1 12.324 0 6.162 6.162 0 0 1-12.324 0zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm4.965-10.322a1.44 1.44 0 1 1 2.881.001 1.44 1.44 0 0 1-2.881-.001z"/></svg>
+        </a>
+        <a href="https://www.bluethumb.com.au/ecology-landscape-design" class="footer-icon-link footer-icon-link--bluethumb" title="Bluethumb">
+          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDEyOCAxMjgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyOCIgaGVpZ2h0PSIxMjgiIGZpbGw9IiNGRkYiLz48dGV4dCB4PSI2NCIgeT0iNjQiIGZvbnQtc2l6ZT0iNDgiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjMDAzN0E0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+QlQ8L3RleHQ+PC9zdmc+" alt="Bluethumb logo">
+        </a>
+      </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
+    <script>
+      (function () {
+        // Map initialization code
+        var TWIN_CITIES = [44.9537, -93.0900];
+        var FLY_ZOOM = 9.8;
+
+        var map = L.map('eld-map', {
+          center: [40.0, -82.0],
+          zoom: 2.3,
+          zoomSnap: 0,
+          keepBuffer: 6,
+          zoomControl: false,
+          attributionControl: false,
+          scrollWheelZoom: false,
+          doubleClickZoom: false,
+          zoomAnimation: false,
+          fadeAnimation: false,
+          markerZoomAnimation: false
+        });
+
+        var mainTileLayer = L.tileLayer(
+          'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}?token=AAPTaRGJe37-TPOzRST1tqV6YGg..JQ4V0QxkKvX-ifBflQpjBRqkezlYDZnbgsZOZgUObnjRLWHYD130yyAlsoQM9rMCmcZiGfSY9aOJAymSiWTpOBu-2iXjoGbItQiY-XleQk1FyTfz_o12NjK5C3ku6HwGQl58gj-hIK9JyZ8HTdFBNNO2qqYSNrr-3TAVYv9fKqBc1guAs_KyWPaPUvbvga7OdBJiucyr9fEPPbCdec72WE5NevLP7K5YAE6OpuHq3Oa7i7EudqQnAT1_wkyIXPHT',
+          { maxZoom: 19, updateWhenZooming: false, keepBuffer: 8 }
+        ).addTo(map);
+
+        var labelLayer = L.tileLayer(
+          'https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png',
+          { maxZoom: 19, opacity: 0, pane: 'overlayPane' }
+        ).addTo(map);
+
+        // Add marker at Twin Cities location
+        L.marker(TWIN_CITIES).addTo(map);
+
+        // Set proper zoom level
+        map.setView(TWIN_CITIES, FLY_ZOOM);
+      })();
+    </script>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        AOS.init({
+          duration: 1900,
+          offset: 150
+        });
+      });
+    </script>
+  </body>
+</html>
