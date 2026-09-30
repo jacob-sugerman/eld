@@ -1516,6 +1516,7 @@ to get oriented; follow the links to see our typical service area, IG, and partn
     <script>
       (function () {
         var TWIN_CITIES = [44.972780238620096, -93.13722684429911];
+        var CARTO_API_KEY = 'cb1_446o_1_b46dd8d8d48394a72956f75f';
         var coarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
         var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         var isFirefox = /firefox/i.test(navigator.userAgent || '');
@@ -1570,7 +1571,7 @@ to get oriented; follow the links to see our typical service area, IG, and partn
         // Label overlay — dark_only_labels: white text with dark halo, standard
         // satellite map style. Hidden until flyTo completes, then fades in.
         var labelLayer = L.tileLayer(
-          'https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png',
+          'https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png?key=' + encodeURIComponent(CARTO_API_KEY),
           { maxZoom: 19, opacity: 0, pane: 'overlayPane' }
         ).addTo(map);
 
